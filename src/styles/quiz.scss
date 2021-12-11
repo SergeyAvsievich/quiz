@@ -1,0 +1,55 @@
+// fonts
+
+@import 'variables';
+@import 'mixins';
+
+.quiz-wrapper {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    margin: 50px auto;
+    height: $quiz-height;
+    width: $quiz-width;
+    // background-color: #00e676;
+    // background-color: #00b74a;
+    // background-color: #66bb6a;
+    // background-color: #ff8f00;
+    background: $quiz-color;
+    color: #eee;
+    border-radius: 5px;
+    & > div {
+      width: 100%;
+      padding: 35px;
+    }
+    ul {
+      @include clear-list();
+      width: 100%;
+      li {
+        padding: 10px 10px;
+        margin-top: 10px;
+        width: 100%;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        transition: background 0.2s ease-in;
+        &:hover {
+          color: #fff;
+          border: 1px solid #fff;
+          background: rgba(255, 255, 255, 0.2);
+          cursor: pointer;
+        }
+      }
+      li.success {
+        background: rgba(37, 241, 19, 0.85);
+      }
+      li.error {
+        background: rgba(235, 64, 22, 0.85);
+      }
+    }
+
+    .fa-check {
+        color: rgba(37, 241, 19, 0.85);
+    }
+    .fa-times {
+        color: rgba(235, 64, 22, 1);
+    }
+}
