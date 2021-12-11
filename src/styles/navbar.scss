@@ -1,0 +1,15 @@
+// fonts
+
+@import 'variables';
+@import 'mixins';
+
+nav {
+    height: $navbar-height;
+    // background: #ff8f00; 
+    // background-color: #fdd835;
+    // background: linear-gradient(90deg, #1e53e5 90%, #1976d2);
+    background: $navbar-color;
+    .fa-user-circle {
+        font-size: 24px;
+    }
+}
