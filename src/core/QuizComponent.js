@@ -7,9 +7,15 @@ export class QuizComponent extends DomListener{
     constructor($root, options = {}){
         super($root, options.listeners)
         this.name = options.name || ''
+        this.subscribe = options.subscribe || []
         this.store = options.store
-        this.storeSub = null
+        this.unsubscribers = []
+
+        this.prepare()
     }
+
+    // hooks до срабатывает до init
+    prepare(){}
 
     toHTML(){
         return ``
@@ -19,11 +25,19 @@ export class QuizComponent extends DomListener{
         this.store.dispatch(action)
     }
 
-    $subscribe(fn){
-        this.storeSub = this.store.subscribe(fn)
+    // Сюда приходят изменения по тем полям, на которые мы подписались
+    storeChanged(){}
+
+    isWatching(key) {
+        return this.subscribe.includes(key)
     }
 
     init(){
         this.initDOMListeners()
+    }
+
+    destroy(){
+        this.removeDOMListener()
+        this.onSubscribers.forEach(unsub => unsub())
     }
 }

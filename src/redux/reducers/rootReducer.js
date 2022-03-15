@@ -1,8 +1,6 @@
 import {initialState} from "../initialState"
 import {FINISH_QUIZ, QUIZ_NEXT_QUESTION, QUIZ_RETRY} from "../types"
 
-console.log('reduce: ', initialState)
-
 export function rootReducer(state = initialState, action){
     switch (action.type) {
         case QUIZ_NEXT_QUESTION:

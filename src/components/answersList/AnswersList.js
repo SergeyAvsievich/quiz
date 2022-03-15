@@ -44,6 +44,7 @@ export class AnswersList extends QuizComponent {
         super($root, {
             name: 'AnswersList',
             listeners: ['click'],
+            subscribe: ['answerState', 'activeQuestion'],
             ...options
         })
         this.quiz = {}
@@ -61,27 +62,22 @@ export class AnswersList extends QuizComponent {
     init() {
         super.init()
 
-        this.$subscribe(() => {
-            console.log('Quiz: ', this.store.getState())
-        })
-
         // наверное правильно асинхронный метод вызывать здесь
         // ненравится, присвоение this.quiz = item[0]
         // пока так, но нужно переработать
 
         getQuiz(db).then(item => {
-            console.log('item: ', item)
             this.quiz = item[0]
         }).then(() => {
-            console.log('promise working')
-            console.log('quizes: ', this.quiz.questions)
             renderAnswersList(
                 this.quiz.questions,
                 this.store.getState().activeQuestion
             )
         })
+    }
 
-        console.log('quiz: ', this.quiz.questions)
+    storeChanged({activeQuestion, answerState}){
+
     }
 
     onClick(event) {

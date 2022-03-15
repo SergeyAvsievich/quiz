@@ -1,4 +1,5 @@
 import {$} from "../../core/dom"
+import {StoreSubscriber} from "../../core/StoreSubscriber"
 
 // конструктор класса принимает селектор, собственно куда в дом
 // добавляем quiz
@@ -6,8 +7,9 @@ import {$} from "../../core/dom"
 export class Quiz {
     constructor(selector, options) {
         this.$el = $(selector)
-        this.store = options.store
         this.components = options.components || []
+        this.store = options.store
+        this.subscriber = new StoreSubscriber(this.store)
     }
 
     getRoot() {
@@ -34,6 +36,12 @@ export class Quiz {
     render() {
         this.$el.append(this.getRoot())
 
+        this.subscriber.subscribeComponents(this.components)
         this.components.forEach(component => component.init())
+    }
+
+    destroy(){
+        this.subscriber.unSubscribeFromStore()
+        this.components.forEach(component => component.destroy())
     }
 }
