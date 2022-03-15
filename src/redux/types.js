@@ -1,0 +1,3 @@
+export const QUIZ_NEXT_QUESTION = 'QUIZ_NEXT_QUESTION'
+export const QUIZ_RETRY = 'QUIZ_RETRY'
+export const FINISH_QUIZ = 'FINISH_QUIZ'
