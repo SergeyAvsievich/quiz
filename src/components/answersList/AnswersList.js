@@ -1,4 +1,3 @@
-import {QuizComponent} from "@core/QuizComponent"
 import {
     isFinishedQuestion,
     isRightAnswer,
@@ -7,6 +6,7 @@ import {
 } from "./answerList.template"
 import {finishedQuiz, nextQuestion, quizRetry} from "../../redux/actions/action"
 import {db, getQuiz} from "../../firebase/firebase"
+import {QuizStateComponent} from "../../core/QuizStateComponent"
 
 // const quizes = {
 //     // currentQuestion: 1,
@@ -37,7 +37,7 @@ import {db, getQuiz} from "../../firebase/firebase"
 // console.log('qz', quizes)
 
 
-export class AnswersList extends QuizComponent {
+export class AnswersList extends QuizStateComponent {
     static className = 'quiz__answers-list'
 
     constructor($root, options) {
@@ -50,13 +50,27 @@ export class AnswersList extends QuizComponent {
         this.quiz = {}
     }
 
-    toHTML() {
+    prepare() {
+        // если нужно
+        // const initialState = {}
+        this.initState({})
+    }
+
+    get template() {
+        // сформировать шпблон в йункцию и передать this.state
+        // Например, createTemplate(this.state)
+        // Использование setState
+        // this.setState({key: value})
         return `
         <div class="container d-flex justify-content-center mt-5">
             <div class="quiz-wrapper">
             </div>
         </div>    
         `
+    }
+
+    toHTML() {
+        return this.template
     }
 
     init() {
