@@ -1,6 +1,6 @@
 export function renderAnswersList(questions, activeQuestion) {
     // представление отделить
-
+    // желательно разбить эту функцию
     const form = document.querySelector('.quiz-wrapper')
 
     form.innerHTML = `
@@ -29,26 +29,7 @@ export function renderAnswersList(questions, activeQuestion) {
     return form
 }
 
-// export function nextQuestion(activeQuestion) {
-//     activeQuestion++
-// }
-
-export function isRightAnswer(answer, {questions}, activeQuestion,){
-    if (+answer === questions[activeQuestion - 1].rightAnswer){
-        return true
-    } else {
-        return false
-    }
-}
-
-export function isFinishedQuestion(questions, activeQuestion){
-    if (activeQuestion === questions.length){
-        return true
-    } else {
-        false
-    }
-}
-
+// думаю, лучше будет вынести создания списка ответов в один компонент
 export const renderFinishQuiz = (questions, answers) => {
     const form = document.querySelector('.quiz-wrapper')
 
@@ -62,15 +43,7 @@ export const renderFinishQuiz = (questions, answers) => {
                 из ${questions.length}
             </span>
             <ol>
-                ${answers.map((answer, index) => {
-        return `<li>
-                    ${questions[index].questionTitle} 
-                    ${answer.rightAnswer
-                ? "<i class='fas fa-check'></i>"
-                : "<i class='fas fa-times'></i>"
-            }
-                            </li>`
-    }).join('')}
+                ${finishetQuizList(questions, answers)}
             </ol>
             <button class="btn btn-primary me-2" data-retry="true">
                 Пройти тест заново
@@ -79,4 +52,18 @@ export const renderFinishQuiz = (questions, answers) => {
         </div>
         
     `
+}
+
+function finishetQuizList(questions, answers){
+    return answers.map((answer, index) => {
+        return `
+            <li>
+                ${questions[index].questionTitle} 
+                
+                ${answer.rightAnswer
+                        ? "<i class='fas fa-check'></i>"
+                        : "<i class='fas fa-times'></i>"}
+            </li>
+        `
+    }).join('')
 }

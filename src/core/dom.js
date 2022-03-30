@@ -40,8 +40,26 @@ class Dom {
         return this
     }
 
-    // el.css({background: 'blue', color: 'red'})
+    get data() {
+        return this.$el.dataset
+    }
 
+    attr(name, value){
+        if (value) {
+            this.$el.setAttribute(name, value)
+            return this
+        }
+        return this.$el.getAttribute(name)
+    }
+
+    text(text){
+        if (typeof text === 'string') {
+            this.$el.textContent = text
+            return this
+        }
+    }
+
+    // el.css({background: 'blue', color: 'red'})
     css(styles = {}){
         Object.entries(styles).forEach(([key, val]) => {
             this.$el.style[key] = val
@@ -54,6 +72,16 @@ class Dom {
 
     findOne(selector){
         return this.$el.document.querySelector(selector)
+    }
+
+    addClass(className){
+        this.$el.classList.add(className)
+        return this
+    }
+
+    removeClass(className){
+        this.$el.classList.remove(className)
+        return this
     }
 }
 
