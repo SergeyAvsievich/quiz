@@ -1,12 +1,14 @@
+import {renderAnswersList, renderFinishQuiz} from "./answerList.template"
 import {
     isFinishedQuestion,
     isRightAnswer,
-    renderAnswersList,
-    renderFinishQuiz
-} from "./answerList.template"
+    shouldAnswer,
+    shouldRetry
+} from "./answerList.functions"
 import {finishedQuiz, nextQuestion, quizRetry} from "../../redux/actions/action"
 import {db, getQuiz} from "../../firebase/firebase"
 import {QuizStateComponent} from "../../core/QuizStateComponent"
+import {$} from "../../core/dom"
 
 // const quizes = {
 //     // currentQuestion: 1,
@@ -34,9 +36,6 @@ import {QuizStateComponent} from "../../core/QuizStateComponent"
 //     ],
 // }
 
-// console.log('qz', quizes)
-
-
 export class AnswersList extends QuizStateComponent {
     static className = 'quiz__answers-list'
 
@@ -44,7 +43,8 @@ export class AnswersList extends QuizStateComponent {
         super($root, {
             name: 'AnswersList',
             listeners: ['click'],
-            subscribe: ['answerState', 'activeQuestion'],
+            // subscribe: ['answerState', 'activeQuestion'], подписки
+            // на изменения состояния с другими компонентами
             ...options
         })
         this.quiz = {}
@@ -63,8 +63,7 @@ export class AnswersList extends QuizStateComponent {
         // this.setState({key: value})
         return `
         <div class="container d-flex justify-content-center mt-5">
-            <div class="quiz-wrapper">
-            </div>
+            <div class="quiz-wrapper"></div>
         </div>    
         `
     }
@@ -81,6 +80,7 @@ export class AnswersList extends QuizStateComponent {
         // пока так, но нужно переработать
 
         getQuiz(db).then(item => {
+            // пока асинхронный dispatch не работатет
             this.quiz = item[0]
         }).then(() => {
             renderAnswersList(
@@ -90,45 +90,58 @@ export class AnswersList extends QuizStateComponent {
         })
     }
 
-    storeChanged({activeQuestion, answerState}){
+    selectAnswer(event) {
+        const quiz = this.quiz
+        const questions = this.quiz.questions
+        const $target = $(event.target)
+        const state = this.store.getState()
 
-    }
+        if (isRightAnswer(
+                $target.data.answer,
+                quiz,
+                state.activeQuestion
+            )
+        ) {
+            $target.addClass('success')
+            this.$dispatch(finishedQuiz({rightAnswer: true}))
+        } else {
+            $target.addClass('error')
+            this.$dispatch(finishedQuiz({rightAnswer: false}))
+        }
 
-    onClick(event) {
-        if (event.target.dataset.answer) {
-            if (isRightAnswer(
-                event.target.dataset.answer,
-                this.quiz,
+        setTimeout(() => {
+            this.$dispatch(nextQuestion())
+            if (isFinishedQuestion(
+                questions,
                 this.store.getState().activeQuestion)
             ) {
-                event.target.className = 'success'
-                this.$dispatch(finishedQuiz({rightAnswer: true}))
+                renderAnswersList(
+                    questions,
+                    this.store.getState().activeQuestion
+                )
             } else {
-                event.target.className = 'error'
-                this.$dispatch(finishedQuiz({rightAnswer: false}))
+                renderFinishQuiz(questions, this.store.getState().answerState)
             }
-            setTimeout(() => {
-                this.$dispatch(nextQuestion())
-                if (isFinishedQuestion(
-                    this.quiz.questions,
-                    this.store.getState().activeQuestion)
-                ) {
-                    renderAnswersList(
-                        this.quiz.questions,
-                        this.store.getState().activeQuestion
-                    )
-                } else {
-                    renderFinishQuiz(
-                        this.quiz.questions,
-                        this.store.getState().answerState
-                    )
-                }
-            }, 1000)
-        } else if (event.target.dataset.retry) {
-            this.$dispatch(quizRetry())
-            renderAnswersList(
-                this.quiz.questions, this.store.getState().activeQuestion
-            )
+        }, 1000)
+    }
+
+    retryHendler() {
+        const quiz = this.quiz
+        const questions = quiz.questions
+
+        this.$dispatch(quizRetry())
+        renderAnswersList(questions, this.store.getState().activeQuestion)
+    }
+
+    storeChanged({activeQuestion, answerState}){}
+
+    onClick(event) {
+        if (shouldAnswer(event)) {
+            this.selectAnswer(event)
+        }
+
+        if (shouldRetry(event)) {
+            this.retryHendler()
         }
     }
 }
