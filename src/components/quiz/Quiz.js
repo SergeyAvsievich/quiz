@@ -1,13 +1,8 @@
 import {$} from "@core/dom"
 import {StoreSubscriber} from "@core/StoreSubscriber"
-import {Loader} from "../ui/loader/Loader"
-// import {Navbar} from "../navbar/Navbar"
-// конструктор класса принимает селектор, собственно куда в дом
-// добавляем quiz
 
 export class Quiz {
-    constructor(selector, options) {
-        this.$el = $(selector)
+    constructor(options) {
         this.components = options.components || []
         this.store = options.store
         this.subscriber = new StoreSubscriber(this.store)
@@ -27,15 +22,6 @@ export class Quiz {
             const $el = $.create('div', Component.className)
             const component = new Component($el, componentOptions)
             $el.html(component.toHTML())
-            if (component instanceof Loader) {
-                setTimeout(() => {
-                    // const loader = document.querySelector('.quiz__loader')
-                    //     .remove()
-                    console.log('component: ', component)
-                    component.destroy()
-                    this.render()
-                }, 3000)
-            }
             $root.append($el)
             return component
         })
@@ -43,9 +29,7 @@ export class Quiz {
         return $root
     }
 
-    render() {
-        this.$el.append(this.getRoot())
-
+    init() {
         this.subscriber.subscribeComponents(this.components)
         this.components.forEach(component => component.init())
     }

@@ -1,0 +1,43 @@
+@import 'variables';
+@import 'mixins';
+
+.button {
+    display: inline-block;
+    color: #000;
+    text-transform: uppercase;
+    border-radius: 4px;
+    font-size: 11px;
+    padding: 9px 17px;
+    margin-right: 15px;
+    border: 1px solid #ccc;
+}
+
+.button:focus{
+    outline: none;
+}
+
+.button:active{
+    opacity: 0.9;
+}
+
+.button:disabled{
+    background: #ccc!important;
+    color: #000!important;
+    cursor: not-allowed;
+}
+
+
+.button.secondary {
+    background-color: rgba(165, 23, 253, 0.85);
+    color: #fff;
+}
+
+.button.success {
+    background: rgba(0, 145, 59, 0.75);;
+    color: #fff;
+}
+
+.button.primary {
+    background: rgba(40, 132, 246, 0.85);
+    color: #fff;
+}
