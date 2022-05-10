@@ -6,35 +6,35 @@ import {
     shouldRetry
 } from "./answerList.functions"
 import {finishedQuiz, nextQuestion, quizRetry} from "../../redux/actions/action"
-import {db, getQuiz} from "../../firebase/firebase"
+// import {db, getQuiz} from "../../firebase/firebase"
 import {QuizStateComponent} from "../../core/QuizStateComponent"
 import {$} from "../../core/dom"
 
-// const quizes = {
-//     // currentQuestion: 1,
-//     questions: [
-//         {
-//             questionTitle: 'Как дела?',
-//             rightAnswer: 1,
-//             answers: [
-//                 {id: 1, title: 'хорошо'},
-//                 {id: 2, title: 'нормально'},
-//                 {id: 3, title: 'не плохо'},
-//                 {id: 4, title: 'плохо'},
-//             ]
-//         },
-//         {
-//             questionTitle: 'Как погода?',
-//             rightAnswer: 2,
-//             answers: [
-//                 {id: 1, title: 'солнечно'},
-//                 {id: 2, title: 'прохладно'},
-//                 {id: 3, title: 'идет дождь'},
-//                 {id: 4, title: 'пасмурно'},
-//             ]
-//         },
-//     ],
-// }
+const quizes = {
+    // currentQuestion: 1,
+    questions: [
+        {
+            questionTitle: 'Как дела?',
+            rightAnswer: 1,
+            answers: [
+                {id: 1, title: 'хорошо'},
+                {id: 2, title: 'нормально'},
+                {id: 3, title: 'не плохо'},
+                {id: 4, title: 'плохо'},
+            ]
+        },
+        {
+            questionTitle: 'Как погода?',
+            rightAnswer: 2,
+            answers: [
+                {id: 1, title: 'солнечно'},
+                {id: 2, title: 'прохладно'},
+                {id: 3, title: 'идет дождь'},
+                {id: 4, title: 'пасмурно'},
+            ]
+        },
+    ],
+}
 
 export class AnswersList extends QuizStateComponent {
     static className = 'quiz__answers-list'
@@ -47,7 +47,7 @@ export class AnswersList extends QuizStateComponent {
             // на изменения состояния с другими компонентами
             ...options
         })
-        this.quiz = {}
+        this.quiz = quizes
     }
 
     prepare() {
@@ -79,15 +79,19 @@ export class AnswersList extends QuizStateComponent {
         // ненравится, присвоение this.quiz = item[0]
         // пока так, но нужно переработать
 
-        getQuiz(db).then(item => {
-            // пока асинхронный dispatch не работатет
-            this.quiz = item[0]
-        }).then(() => {
-            renderAnswersList(
-                this.quiz.questions,
-                this.store.getState().activeQuestion
-            )
-        })
+        // getQuiz(db).then(item => {
+        //     // пока асинхронный dispatch не работатет
+        //     this.quiz = item[0]
+        // }).then(() => {
+        //     renderAnswersList(
+        //         this.quiz.questions,
+                // this.store.getState().activeQuestion
+        //     )
+        // })
+        console.log('quiz: ', this.quiz.questions)
+        renderAnswersList(
+            this.quiz.questions,
+            this.store.getState().activeQuestion)
     }
 
     selectAnswer(event) {

@@ -5,16 +5,25 @@ export class QuizStateComponent extends QuizComponent {
         super(...args)
     }
 
+    initState(initialState = {}) {
+        this.state = {...initialState}
+        if (typeof this.state !== 'object') {
+            throw new Error('InitialState must be an object')
+        }
+        this.prevState = this.state
+    }
+
     get template() {
         return JSON.stringify(this.state, null, 2)
     }
 
-    initState(initialState) {
-        this.state = {...initialState}
-    }
-
     setState(newState) {
-        this.state = {...this.state, ...newState}
-        this.$root.html(this.template)
+        if (JSON.stringify(newState) !== JSON.stringify(this.prevState)) {
+            this.prevState = newState
+            this.state = {...this.state, ...newState}
+        }
+
+        this.$root.innerHTML = ''
+        this.$root.innerHTML = this.template.innerHTML
     }
 }
