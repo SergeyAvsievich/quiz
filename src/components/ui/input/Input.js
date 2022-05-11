@@ -1,9 +1,5 @@
 import {QuizComponent} from '@core/QuizComponent'
 
-function isInvalid({valid, touched, shouldValidate}) {
-    console.log(!valid && shouldValidate && touched)
-}
-
 export class Input extends QuizComponent {
     constructor($root, options) {
         super($root, {
@@ -12,30 +8,35 @@ export class Input extends QuizComponent {
             ...options
         })
 
+        this.type = options.type
         this.label = options.label
-        this.inputType = options.inputType
         this.errorMessage = options.errorMessage
-
-        this.init()
+        this.value = options.value
+        this.touched = options.touched
+        this.minLength = options.minLength
+        this.key = options.key
+        this.name = options.name
+        this.valid = options.valid
     }
 
+    prepare() {}
+
     get template() {
-        const htmlFor = `${this.inputType}-${Math.random()}`
-
-        // if (isInvalid()) {}
-
+        const isValidOrNotTouched = this.valid || !this.touched
         return `
-            <div class="input">
-                <label for="${htmlFor}">${this.label}</label>
+            <div class="input ${(isValidOrNotTouched)
+                    ? ''
+                    : 'invalid'}">
+                <label for="${this.key}">${this.label}</label>
                 <input
-                    type=${this.inputType}
-                    id=${htmlFor}
+                    id="${this.key}"
+                    type="${this.type}"
+                    value="${this.value}"
+                    data-input="${this.name}"
                 />
-                ${isInvalid('valid')
-                ? ` <span>
-                            ${this.errorMessage || 'Введите верное значение'}
-                        </span>`
-                : ''
+                ${(isValidOrNotTouched)
+                    ? ''
+                    : `<span>${this.errorMessage}</span>`
             }
             </div>
         `
@@ -50,6 +51,6 @@ export class Input extends QuizComponent {
     }
 
     onInput(event) {
-        console.log('Input: ', event)
+        this.value = event.target.value
     }
 }

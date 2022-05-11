@@ -1,58 +1,85 @@
 import {$} from '@core/dom'
 import {Button} from '../ui/button/Button'
 import {Input} from '../ui/input/Input'
+import {QuizStateComponent} from '@core/QuizStateComponent'
+import is from 'is_js'
 
-export class Auth {
-    constructor(options) {
+export class Auth extends QuizStateComponent {
+    constructor($root, options) {
+        super($root, {
+            name: 'Form',
+            listeners: ['input'],
+            ...options
+        })
+
+        this.$root = $root
         this.components = options.components || []
         this.store = options.store
     }
 
-    getRoot() {
-        const $root = $.create('div', 'auth')
-        const $el = $.create('div')
-
-        const btn = new Button($el, {
-            type: 'primary',
-            disabled: true
+    prepare() {
+        this.initState({
+            isFormValid: false,
+            formControls: {
+                email: {
+                    value: '',
+                    type: 'email',
+                    label: 'Введите email',
+                    errorMessage: 'Введите корректный email',
+                    valid: false,
+                    touched: false,
+                    validation: {
+                        required: true,
+                        email: true
+                    },
+                },
+                password: {
+                    value: '',
+                    type: 'password',
+                    label: 'Введите пароль',
+                    errorMessage: 'Введите корректный пароль',
+                    valid: false,
+                    touched: false,
+                    validation: {
+                        required: true,
+                        minLength: 6
+                    },
+                },
+            }
         })
+    }
 
-        const input = new Input($el, {
-            inputType: 'text',
-            label: 'Введите логин',
-            errorMessage: 'Неправильный логин'
-        })
+    get template() {
+        return this.createTemplaeteFormAuth()
+    }
 
-        // eslint-disable-next-line no-constant-condition
-        // if (true) {
-        //     input.classList.add('invalid')
-        // }
+    createTemplaeteFormAuth() {
+        const $input = $.create('div')
+        const $button = $.create('button', 'button')
 
-        $root.html(`
-            <form class="auth__form">
-                <div class="form__header">
-                    <h1>Форма авторизации</h1>
-                </div>
-                <hr/>
-                <div class="form__body">
-                    <div>
-                        <label for="login">Логин</label>
-                        <input type="text" id="login">
-                    </div>
-                    <div>
-                        <label for="password">Пароль</label>
-                        <input type="password" id="password">
-                        ${input.toHTML()}
-                    </div>
-                </div>
-                <hr/>
-                <div class="form__footer">
-                    <button class="btn btn-success me-1">Вход</button>
-                    <button class="btn btn-secondary">Регистрация</button>
-                    ${btn.toHTML()}
-                </div>
-            </form>
+        this.inputs = this.renderInputs($input)
+
+        const $formHeader = $.create('div', 'form__header')
+        $formHeader.html(`
+            <div class="form__header">
+                <h1>Форма авторизации</h1>
+            </div>
         `)
+
+        const $formBody = $.create('div', 'form__body')
+        $formBody.html(`
+            ${this.inputs.map(input => {
+                return input.toHTML()
+            }).join('')}
+        `)
+
+        const $formFoter = $.create('div', 'form__footer')
+        $formFoter.html(`
+            <div class="form__footer">
+                ${this.renderButtons($button)}
+            </div>   
+            `
+        )
 
         // пробтгаемся по компонентам, создаем для них div
         // this.components = this.components.map(Component => {
@@ -63,16 +90,113 @@ export class Auth {
         //     return component
         // })
 
-        return $root
+        this.$root.append($formHeader)
+        this.$root.append($formBody)
+        this.$root.append($formFoter)
+
+        return this.$root
+    }
+
+    getRoot() {
+        return this.template
     }
 
     init() {
         // this.subscriber.subscribeComponents(this.components)
+        super.init()
+        this.inputs.forEach(input => input.init())
         this.components.forEach(component => component.init())
     }
 
     destroy(){
         // this.subscriber.unSubscribeFromStore()
         this.components.forEach(component => component.destroy())
+    }
+
+    onInput(event) {
+        console.log('event: ', event.target.value)
+        this.onChangeHandler(event)
+    }
+
+    renderInputs($input) {
+        return Object.keys(this.state.formControls)
+        .map((controlName, index) => {
+            const control = this.state.formControls[controlName]
+            return new Input($input, {
+                    key: controlName + index,
+                    name: controlName,
+                    type: control.type,
+                    value: control.value,
+                    valid: control.valid,
+                    touched: control.touched,
+                    label: control.label,
+                    shouldValidate: !!control.validation,
+                    errorMessage: control.errorMessage
+                }
+            )
+        })
+    }
+
+    renderButtons($button) {
+        return [
+            new Button($button, {
+                type: 'secondary',
+                text: 'Вход',
+                disabled: !this.state.isFormValid
+            }),
+            new Button($button, {
+                type: 'success',
+                text: 'Регистрация',
+                disabled: !this.state.isFormValid
+            }),
+        ].map(button => button.toHTML()).join('')
+    }
+
+    validateControl(value, validation) {
+        if (!validation) {
+            return true
+        }
+
+        let isValid = true
+
+        if (validation.required) {
+            isValid = value.trim() !== '' && isValid
+        }
+
+        if (validation.email) {
+            isValid = is.email(value) && isValid
+        }
+
+        if (validation.minLength) {
+            isValid = value.length >= validation.minLength && isValid
+        }
+
+        return isValid
+    }
+
+    onChangeHandler(event) {
+        const formControls = this.state.formControls
+        const controlName = event.target.dataset.input
+        const control = {...formControls[controlName]}
+
+        control.value = event.target.value
+        control.touched = true
+        control.valid = this.validateControl(control.value, control.validation)
+
+        formControls[controlName] = control
+
+        let isFormValid = true
+
+        Object.keys(formControls).forEach(name => {
+            isFormValid = formControls[name].valid && isFormValid
+        })
+
+        this.setState({formControls, isFormValid})
+
+        const input = document.querySelector(`[data-input='${controlName}']`)
+        input.setAttribute('type', 'text')
+        input.focus()
+        input.selectionStart = input.value.length
+        input.setAttribute('type', `${controlName}`)
     }
 }

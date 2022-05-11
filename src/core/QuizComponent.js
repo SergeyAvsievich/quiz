@@ -14,7 +14,7 @@ export class QuizComponent extends DomListener{
         this.prepare()
     }
 
-    // hooks до срабатывает до init
+    // hook до срабатывает до init
     prepare(){}
 
     toHTML(){
