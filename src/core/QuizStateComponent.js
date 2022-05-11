@@ -23,7 +23,7 @@ export class QuizStateComponent extends QuizComponent {
             this.state = {...this.state, ...newState}
         }
 
-        this.$root.innerHTML = ''
+        this.$root.clear()
         this.$root.innerHTML = this.template.innerHTML
     }
 }

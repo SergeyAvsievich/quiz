@@ -10,8 +10,10 @@ export class Button extends QuizComponent {
             ...options
         })
 
+        this.$root = $root
         this.type = options.type
         this.disabled = options.disabled
+        this.text = options.text
 
         this.init()
     }
@@ -19,12 +21,16 @@ export class Button extends QuizComponent {
     prepare() {}
 
     get template() {
-        return `
-            <button 
-                class="button ${this.type}"
-                disabled="${this.disabled}"    
-            >Click Me</button>  
-        `
+        this.$root.$el.className = `button ${this.type}`
+        this.$root.text(this.text)
+        this.$root.$el.disabled = this.disabled
+        return this.$root.$el.outerHTML
+        // return `
+        //     <button
+        //         class="button ${this.type}"
+        //         ${disabled}
+        //     >${this.text}</button>
+        // `
     }
 
     toHTML() {

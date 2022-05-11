@@ -8,16 +8,16 @@ export class AuthPage extends Page {
     }
 
     getRoot() {
-        // const $container = $.create('div', 'auth')
+        const $container = $.create('div', 'auth')
 
         const $root = $.create('form', 'auth__form')
         this.auth = new Auth($root, {
             components: [],
         })
 
-        // $container.html(this.auth.getRoot())
+        $container.append(this.auth.getRoot())
 
-        return this.auth.getRoot()
+        return $container
     }
 
     afterRender() {

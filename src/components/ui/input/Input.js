@@ -22,8 +22,11 @@ export class Input extends QuizComponent {
     prepare() {}
 
     get template() {
+        const isValidOrNotTouched = this.valid || !this.touched
         return `
-            <div class="input">
+            <div class="input ${(isValidOrNotTouched)
+                    ? ''
+                    : 'invalid'}">
                 <label for="${this.key}">${this.label}</label>
                 <input
                     id="${this.key}"
@@ -31,7 +34,7 @@ export class Input extends QuizComponent {
                     value="${this.value}"
                     data-input="${this.name}"
                 />
-                ${(this.valid || !this.touched)
+                ${(isValidOrNotTouched)
                     ? ''
                     : `<span>${this.errorMessage}</span>`
             }

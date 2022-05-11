@@ -19,6 +19,7 @@ export class Auth extends QuizStateComponent {
 
     prepare() {
         this.initState({
+            isFormValid: false,
             formControls: {
                 email: {
                     value: '',
@@ -53,19 +54,8 @@ export class Auth extends QuizStateComponent {
     }
 
     createTemplaeteFormAuth() {
-        const $el = $.create('div')
-
-        const btn = new Button($el, {
-            type: 'primary',
-            disabled: true
-        })
-
-        // eslint-disable-next-line no-constant-condition
-        // if (true) {
-        //     input.classList.add('invalid')
-        // }
-
         const $input = $.create('div')
+        const $button = $.create('button', 'button')
 
         this.inputs = this.renderInputs($input)
 
@@ -86,9 +76,7 @@ export class Auth extends QuizStateComponent {
         const $formFoter = $.create('div', 'form__footer')
         $formFoter.html(`
             <div class="form__footer">
-                <button class="btn btn-success me-1">Вход</button>
-                <button class="btn btn-secondary">Регистрация</button>
-                ${btn.toHTML()}
+                ${this.renderButtons($button)}
             </div>   
             `
         )
@@ -115,7 +103,8 @@ export class Auth extends QuizStateComponent {
 
     init() {
         // this.subscriber.subscribeComponents(this.components)
-        console.log('auth init')
+        super.init()
+        this.inputs.forEach(input => input.init())
         this.components.forEach(component => component.init())
     }
 
@@ -148,7 +137,20 @@ export class Auth extends QuizStateComponent {
         })
     }
 
-    renderButtons() {}
+    renderButtons($button) {
+        return [
+            new Button($button, {
+                type: 'secondary',
+                text: 'Вход',
+                disabled: !this.state.isFormValid
+            }),
+            new Button($button, {
+                type: 'success',
+                text: 'Регистрация',
+                disabled: !this.state.isFormValid
+            }),
+        ].map(button => button.toHTML()).join('')
+    }
 
     validateControl(value, validation) {
         if (!validation) {
@@ -183,7 +185,13 @@ export class Auth extends QuizStateComponent {
 
         formControls[controlName] = control
 
-        this.setState({formControls})
+        let isFormValid = true
+
+        Object.keys(formControls).forEach(name => {
+            isFormValid = formControls[name].valid && isFormValid
+        })
+
+        this.setState({formControls, isFormValid})
 
         const input = document.querySelector(`[data-input='${controlName}']`)
         input.setAttribute('type', 'text')
