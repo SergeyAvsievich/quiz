@@ -1,5 +1,11 @@
 import {initialState} from "../initialState"
-import {FINISH_QUIZ, QUIZ_NEXT_QUESTION, QUIZ_RETRY} from "../types"
+import {
+    AUTH_LOGOUT,
+    AUTH_SUCCESS,
+    FINISH_QUIZ,
+    QUIZ_NEXT_QUESTION,
+    QUIZ_RETRY
+} from "../types"
 
 export function rootReducer(state = initialState, action){
     switch (action.type) {
@@ -21,6 +27,14 @@ export function rootReducer(state = initialState, action){
                 ...state,
                 answerState: [...state.answerState, action.answer],
                 isFinished: true
+            }
+        case AUTH_SUCCESS:
+            return {
+                ...state, token: action.token
+            }
+        case AUTH_LOGOUT:
+            return {
+                ...state, token: null
             }
         default:
             return state

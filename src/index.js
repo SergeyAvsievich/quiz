@@ -8,6 +8,8 @@ import './styles/style.scss'
 //     {path: '', element: QuizPage},
 // ]
 
+// проблема в передаче store, создаетьсч в компоненте Quiz
+
 new Router('#app', {
     auth: AuthPage,
     quiz: QuizPage

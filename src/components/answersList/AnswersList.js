@@ -5,36 +5,39 @@ import {
     shouldAnswer,
     shouldRetry
 } from "./answerList.functions"
-import {finishedQuiz, nextQuestion, quizRetry} from "../../redux/actions/action"
+import {
+    finishedQuiz, nextQuestion, quizRetry
+} from "../../redux/actions/action"
 // import {db, getQuiz} from "../../firebase/firebase"
 import {QuizStateComponent} from "../../core/QuizStateComponent"
 import {$} from "../../core/dom"
+import axios from "axios"
 
-const quizes = {
-    // currentQuestion: 1,
-    questions: [
-        {
-            questionTitle: 'Как дела?',
-            rightAnswer: 1,
-            answers: [
-                {id: 1, title: 'хорошо'},
-                {id: 2, title: 'нормально'},
-                {id: 3, title: 'не плохо'},
-                {id: 4, title: 'плохо'},
-            ]
-        },
-        {
-            questionTitle: 'Как погода?',
-            rightAnswer: 2,
-            answers: [
-                {id: 1, title: 'солнечно'},
-                {id: 2, title: 'прохладно'},
-                {id: 3, title: 'идет дождь'},
-                {id: 4, title: 'пасмурно'},
-            ]
-        },
-    ],
-}
+// const quizes = {
+//     // currentQuestion: 1,
+//     questions: [
+//         {
+//             questionTitle: 'Как дела?',
+//             rightAnswer: 1,
+//             answers: [
+//                 {id: 1, title: 'хорошо'},
+//                 {id: 2, title: 'нормально'},
+//                 {id: 3, title: 'не плохо'},
+//                 {id: 4, title: 'плохо'},
+//             ]
+//         },
+//         {
+//             questionTitle: 'Как погода?',
+//             rightAnswer: 2,
+//             answers: [
+//                 {id: 1, title: 'солнечно'},
+//                 {id: 2, title: 'прохладно'},
+//                 {id: 3, title: 'идет дождь'},
+//                 {id: 4, title: 'пасмурно'},
+//             ]
+//         },
+//     ],
+// }
 
 export class AnswersList extends QuizStateComponent {
     static className = 'quiz__answers-list'
@@ -47,7 +50,8 @@ export class AnswersList extends QuizStateComponent {
             // на изменения состояния с другими компонентами
             ...options
         })
-        this.quiz = quizes
+
+        this.quiz = {}
     }
 
     prepare() {
@@ -78,20 +82,31 @@ export class AnswersList extends QuizStateComponent {
         // наверное правильно асинхронный метод вызывать здесь
         // ненравится, присвоение this.quiz = item[0]
         // пока так, но нужно переработать
+        this.getQuizDate().then(quiz => {
+            renderAnswersList(
+                quiz.questions,
+                this.store.getState().activeQuestion
+            )
+        })
 
-        // getQuiz(db).then(item => {
-        //     // пока асинхронный dispatch не работатет
-        //     this.quiz = item[0]
-        // }).then(() => {
-        //     renderAnswersList(
-        //         this.quiz.questions,
-                // this.store.getState().activeQuestion
-        //     )
-        // })
-        console.log('quiz: ', this.quiz.questions)
-        renderAnswersList(
-            this.quiz.questions,
-            this.store.getState().activeQuestion)
+        // console.log('quiz questions: ', this.quizes)
+        // renderAnswersList(
+        //     this.getQuizDate().questions,
+        //     // this.quiz.questions,
+        //     this.store.getState().activeQuestion
+        // )
+    }
+
+    async getQuizDate() {
+        try {
+            const response = await axios.get('https://quiz-js-5d6a6-default-rtdb.firebaseio.com/questions.json')
+            this.quiz.questions = response.data
+            console.log('data: ', response.data)
+            console.log('data: ', this.quiz)
+            return this.quiz
+        } catch (e) {
+            console.log('error: ', e)
+        }
     }
 
     selectAnswer(event) {
@@ -101,10 +116,10 @@ export class AnswersList extends QuizStateComponent {
         const state = this.store.getState()
 
         if (isRightAnswer(
-                $target.data.answer,
-                quiz,
-                state.activeQuestion
-            )
+            $target.data.answer,
+            quiz,
+            state.activeQuestion
+        )
         ) {
             $target.addClass('success')
             this.$dispatch(finishedQuiz({rightAnswer: true}))
@@ -137,7 +152,7 @@ export class AnswersList extends QuizStateComponent {
         renderAnswersList(questions, this.store.getState().activeQuestion)
     }
 
-    storeChanged({activeQuestion, answerState}){}
+    storeChanged({activeQuestion, answerState}) { }
 
     onClick(event) {
         if (shouldAnswer(event)) {

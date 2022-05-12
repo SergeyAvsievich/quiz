@@ -4,7 +4,8 @@ const defaultState = {
     quizes: [],
     activeQuestion: 1,
     isFinished: false,
-    answerState: []
+    answerState: [],
+    token: null,
 }
 
 export const initialState = storage('quiz-state')

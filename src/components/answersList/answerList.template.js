@@ -1,6 +1,7 @@
 export function renderAnswersList(questions, activeQuestion) {
     // представление отделить
     // желательно разбить эту функцию
+
     const form = document.querySelector('.quiz-wrapper')
 
     form.innerHTML = `
