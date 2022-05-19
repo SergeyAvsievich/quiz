@@ -4,7 +4,7 @@ import {Input} from '../ui/input/Input'
 import {QuizStateComponent} from '@core/QuizStateComponent'
 import is from 'is_js'
 // import axios from 'axios'
-import {auth} from '../../redux/actions/auth'
+import {auth} from '../../storage/actions/auth'
 import {debounce} from '../../core/utils'
 
 export class Auth extends QuizStateComponent {

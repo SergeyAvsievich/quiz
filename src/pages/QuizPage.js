@@ -2,32 +2,23 @@ import {Page} from "@core/Page";
 import {Quiz} from '@/components/quiz/Quiz'
 import {Navbar} from '@/components/navbar/Navbar'
 import {AnswersList} from '@/components/answersList/AnswersList'
-import {createStore} from '@core/createStore'
-import {rootReducer} from '@/redux/reducers/rootReducer'
-import {storage} from '@core/utils'
+// import {storage} from '@core/utils'
+// import {createStore} from '@core/redux/createStore'
+// import {rootReducer} from '@/storage/reducers/rootReducer'
 
-export class QuizPage extends Page{
-    constructor(params){
+export class QuizPage extends Page {
+    constructor(params, store){
         super(params)
         this.params = params
+        this.store = store
     }
 
     getRoot() {
-        const store = createStore(rootReducer)
-
-        // subscribe лучше здесь сделать
-        // где мы орпределяем inisialState вызвать storage
-        // и здесь storage передать в subscribe как ниже
-        store.subscribe(state => {
-            console.log('App State: ', state)
-            storage('quiz-state', state)
-        })
-
         // создаем инстанс класса куиз, который рэндэрит в
         // нужном порядке компоненты
         this.quiz = new Quiz({
             components: [Navbar, AnswersList],
-            store
+            store: this.store
         })
 
         return this.quiz.getRoot()

@@ -7,7 +7,7 @@ import {
 } from "./answerList.functions"
 import {
     finishedQuiz, nextQuestion, quizRetry
-} from "../../redux/actions/action"
+} from "../../storage/actions/action"
 // import {db, getQuiz} from "../../firebase/firebase"
 import {QuizStateComponent} from "../../core/QuizStateComponent"
 import {$} from "../../core/dom"
@@ -82,6 +82,7 @@ export class AnswersList extends QuizStateComponent {
         // наверное правильно асинхронный метод вызывать здесь
         // ненравится, присвоение this.quiz = item[0]
         // пока так, но нужно переработать
+        console.log('this.store: ', this.store.getState())
         this.getQuizDate().then(quiz => {
             renderAnswersList(
                 quiz.questions,

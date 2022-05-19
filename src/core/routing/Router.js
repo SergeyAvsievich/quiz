@@ -2,10 +2,12 @@ import {$} from '@core/dom'
 import {ActiveRout} from './ActiveRouter'
 
 export class Router {
-    constructor(selector, routes) {
+    constructor(selector, routes, store) {
         if (!selector) {
             throw new Error('Selector is not defined')
         }
+
+        this.store = store
         this.$root = $(selector)
         this.routes = routes
         this.changeRouteHandler = this.changeRouteHandler.bind(this)
@@ -25,7 +27,7 @@ export class Router {
         Object.keys(this.routes).forEach(route => {
             if (route === ActiveRout.path) {
                 const Page = this.routes[route]
-                this.page = new Page(ActiveRout.params)
+                this.page = new Page(ActiveRout.params, this.store)
                 this.$root.clear()
                 this.$root.append(this.page.getRoot())
                 this.page.afterRender()
