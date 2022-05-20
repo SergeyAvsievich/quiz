@@ -2,9 +2,13 @@ import {storage} from "../core/utils"
 
 const defaultState = {
     quizes: [],
-    activeQuestion: 1,
+    loading: false,
+    error: null,
+    results: {},
     isFinished: false,
+    activeQuestion: 1,
     answerState: [],
+    quiz: null,
     token: null,
 }
 

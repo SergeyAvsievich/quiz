@@ -1,4 +1,4 @@
-export function createStore(reducer, middleWare) {
+ export function createStore(reducer, middleWare) {
     let state = reducer(undefined, {type: '__INIT__'})
     let subscribers = []
 

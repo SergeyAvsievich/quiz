@@ -2,13 +2,47 @@ import {initialState} from "../initialState"
 import {
     AUTH_LOGOUT,
     AUTH_SUCCESS,
+    FETCH_QUIEZES_ERROR,
+    FETCH_QUIEZES_START,
+    FETCH_QUIEZES_SUCCESS,
+    FETCH_QUIZ_SUCCESS,
     FINISH_QUIZ,
     QUIZ_NEXT_QUESTION,
-    QUIZ_RETRY
+    QUIZ_RETRY,
+    QUIZ_SET_STATE
 } from "../types"
 
 export function rootReducer(state = initialState, action){
     switch (action.type) {
+        case FETCH_QUIEZES_START:
+            return {
+                ...state,
+                loading: true
+            }
+        case FETCH_QUIEZES_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                quizes: action.quizes
+            }
+        case FETCH_QUIEZES_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.error
+            }
+        case FETCH_QUIZ_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                quiz: action.quiz
+            }
+        case QUIZ_SET_STATE:
+            return {
+                ...state,
+                answerstate: action.answerState,
+                results: action.results
+            }
         case QUIZ_NEXT_QUESTION:
             return {
                 ...state,
