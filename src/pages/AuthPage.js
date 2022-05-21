@@ -10,7 +10,7 @@ export class AuthPage extends Page {
     getRoot() {
         const $container = $.create('div', 'auth')
 
-        const $root = $.create('form', 'auth__form')
+        const $root = $.create('div', 'auth__form')
         this.auth = new Auth($root, {
             components: [],
         })

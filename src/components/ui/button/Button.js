@@ -23,6 +23,7 @@ export class Button extends QuizComponent {
     get template() {
         this.$root.$el.className = `button ${this.type}`
         this.$root.text(this.text)
+        this.$root.attr('data-type', this.type)
         this.$root.$el.disabled = this.disabled
         return this.$root.$el.outerHTML
         // return `

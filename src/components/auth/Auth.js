@@ -3,21 +3,27 @@ import {Button} from '../ui/button/Button'
 import {Input} from '../ui/input/Input'
 import {QuizStateComponent} from '@core/QuizStateComponent'
 import is from 'is_js'
+// import axios from 'axios'
+import {auth} from '../../storage/actions/auth'
+import {debounce} from '../../core/utils'
 
 export class Auth extends QuizStateComponent {
     constructor($root, options) {
         super($root, {
             name: 'Form',
-            listeners: ['input'],
+            listeners: ['input', 'click'],
             ...options
         })
 
         this.$root = $root
         this.components = options.components || []
-        this.store = options.store
+        // this.store = options.store
     }
 
     prepare() {
+        // будет ли данные получать через debounce
+        this.onInput = debounce(this.onInput, 300)
+
         this.initState({
             isFormValid: false,
             formControls: {
@@ -116,6 +122,31 @@ export class Auth extends QuizStateComponent {
     onInput(event) {
         console.log('event: ', event.target.value)
         this.onChangeHandler(event)
+    }
+
+    onClick(event) {
+        const $target = $(event.target)
+        if ($target.data.type === 'success') {
+            this.registerHandler()
+        } else if ($target.data.type === 'secondary') {
+            this.loginHandler()
+        }
+    }
+
+    loginHandler() {
+        // const email = this.state.formControls.email.value
+        // const password = this.state.formControls.password.value
+
+        // this.store.dispatch(auth(email, password, true))
+
+        console.log('state:', this.store)
+    }
+
+    registerHandler() {
+        const email = this.state.formControls.email.value
+        const password = this.state.formControls.password.value
+
+        auth(email, password, false)
     }
 
     renderInputs($input) {

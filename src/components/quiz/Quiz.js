@@ -1,17 +1,19 @@
 import {$} from "@core/dom"
-import {StoreSubscriber} from "@core/StoreSubscriber"
+// import {StoreSubscriber} from "@core/redux/StoreSubscriber"
 
 export class Quiz {
     constructor(options) {
         this.components = options.components || []
         this.store = options.store
-        this.subscriber = new StoreSubscriber(this.store)
+        // this.subscriber = new StoreSubscriber(this.store)
     }
 
     getRoot() {
         // создаем главный div с классом quiz
         const $root = $.create('div', 'quiz')
         // $root.classList.add('quiz')
+
+        // console.log('this.store: ', this.store)
 
         const componentOptions = {
             store: this.store
@@ -30,12 +32,12 @@ export class Quiz {
     }
 
     init() {
-        this.subscriber.subscribeComponents(this.components)
+        // this.subscriber.subscribeComponents(this.components)
         this.components.forEach(component => component.init())
     }
 
     destroy(){
-        this.subscriber.unSubscribeFromStore()
+        // this.subscriber.unSubscribeFromStore()
         this.components.forEach(component => component.destroy())
     }
 }
