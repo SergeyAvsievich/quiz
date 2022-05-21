@@ -2,6 +2,7 @@ import {createStore} from './core/redux/createStore'
 import {Router} from './core/routing/Router'
 import {storage} from './core/utils'
 import {AuthPage} from './pages/AuthPage'
+import {quizCreatorPage} from './pages/quizCreatorPage'
 import {QuizPage} from './pages/QuizPage'
 import {rootReducer} from './storage/reducers/rootReducer'
 import './styles/style.scss'
@@ -24,5 +25,6 @@ store.subscribe(state => {
 
 new Router('#app', {
     auth: AuthPage,
-    quiz: QuizPage
+    quiz: QuizPage,
+    creator: quizCreatorPage
 }, store)

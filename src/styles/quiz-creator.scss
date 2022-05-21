@@ -1,0 +1,49 @@
+@import 'variables';
+@import 'mixins';
+
+.quiz-creator {
+    width: 100vw;
+    height: 100vh;
+    // background: linear-gradient(45deg,  #FC2C78 0%, #AA3778 100%);
+    background: linear-gradient(45deg, #FC2C78 45%, #6D4077 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+
+    h1 {
+        font-size: 30px;
+    }
+
+    &__form {
+        width: 800px;
+        background: #fff;
+        padding: 30px;
+        border-radius: 5px;
+
+        input {
+            width: 100%;
+            height: 30px;
+            margin: 0 0 10px 0;
+            border: 1px solid #ddd;
+            background: #fafafa;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid #1266f1;
+        }
+
+        select {
+            width: 100%;
+            height: 30px;
+            margin: 0 0 10px 0;
+            border: 1px solid #ddd;
+            background: #fafafa;
+            border-radius: 5px;
+            padding: 5px;
+        }
+    }
+}
