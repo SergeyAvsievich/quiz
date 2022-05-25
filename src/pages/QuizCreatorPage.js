@@ -2,9 +2,10 @@ import {Page} from "@core/Page";
 import {$} from "@core/dom"
 import {QuizCreator} from "../components/quizCreator/quizCreator";
 
-export class quizCreatorPage extends Page {
-    constructor(params) {
+export class QuizCreatorPage extends Page {
+    constructor(params, store) {
         super(params)
+        this.store = store
     }
 
     getRoot() {
@@ -13,17 +14,17 @@ export class quizCreatorPage extends Page {
         const $root = $.create('div', 'quiz-creator__form')
         this.quizCreator = new QuizCreator($root, {
             components: [],
-        })
+        }, this.store)
 
-        $container.html(this.quizCreator.getRoot())
+        console.log('store quizcreatorpage: ', this.store)
 
-        // $container.append()
+        $container.append(this.quizCreator.getRoot())
 
         return $container
     }
 
     afterRender() {
-        this.auth.init()
+        this.quizCreator.init()
     }
 
     destroy() {

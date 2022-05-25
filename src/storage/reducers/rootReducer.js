@@ -2,6 +2,7 @@ import {initialState} from "../initialState"
 import {
     AUTH_LOGOUT,
     AUTH_SUCCESS,
+    CREATE_QUIZ_QUESTION,
     FETCH_QUIEZES_ERROR,
     FETCH_QUIEZES_START,
     FETCH_QUIEZES_SUCCESS,
@@ -69,6 +70,11 @@ export function rootReducer(state = initialState, action){
         case AUTH_LOGOUT:
             return {
                 ...state, token: null
+            }
+        case CREATE_QUIZ_QUESTION:
+            return {
+                ...state,
+                quiz: [...state.quiz, action.quizItem]
             }
         default:
             return state

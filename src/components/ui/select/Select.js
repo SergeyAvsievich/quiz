@@ -1,12 +1,14 @@
 import {QuizComponent} from '@core/QuizComponent'
 
-export class Input extends QuizComponent {
+export class Select extends QuizComponent {
     constructor($root, options) {
         super($root, {
-            name: 'Input',
-            listeners: ['change'],
+            name: 'Select',
+            listeners: [],
             ...options
         })
+
+        this.optionsParams = options.optionsParams
     }
 
     prepare() {}
@@ -19,15 +21,17 @@ export class Input extends QuizComponent {
                 <select 
                     id="${htmlfor}"
                     value="${this.value}"
+                    data-select="${htmlfor}"
                 >
-
+                ${this.createTemplateOptions()}
                 </select>
             </div>
         `
     }
 
-    createTemplateoptions() {
-        return this.options.map((option, inedex) => {
+    createTemplateOptions() {
+        console.log('options: ', this.optionsParams)
+        return this.optionsParams.map((option, index) => {
             return `
                 <option
                     value="${option.value}"
@@ -45,6 +49,4 @@ export class Input extends QuizComponent {
     init() {
         super.init()
     }
-
-    onChange() {}
 }
