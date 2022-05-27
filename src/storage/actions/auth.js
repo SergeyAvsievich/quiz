@@ -1,15 +1,14 @@
-import axios from "axios"
+import axios from "@/axios/axios-quiz"
 import {AUTH_LOGOUT, AUTH_SUCCESS} from "../types"
 
 export function auth(email, password, isLogin) {
-    console.log('auth called')
     return async dispatch => {
         const authData = {
             email, password,
             returnSecureToken: true
         }
 
-        const apiKey = 'AIzaSyDIn9PwO0qDk_RDhkvT-8Bt6p44YfWqlAM'
+        const apiKey = 'AIzaSyBcTuT3KaYbzMs3kzeVqjbjLxicxTkgdeg'
 
         let url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`
 
@@ -18,7 +17,6 @@ export function auth(email, password, isLogin) {
         }
 
         const response = await axios.post(url, authData)
-        console.log('data: ', response.data)
 
         const data = response.data
         const expirationDate = new Date(new Date()
@@ -42,12 +40,14 @@ export function autoLogout(time) {
 }
 
 export function logout() {
+    console.log('logout dispatch')
     return {
         type: AUTH_LOGOUT,
     }
 }
 
 export function authSuccess(token) {
+    console.log('authSuccess dispatch')
     localStorage.removeItem('token')
     localStorage.removeItem('userId')
     localStorage.removeItem('expirationDate')

@@ -3,8 +3,9 @@ import {Auth} from "../components/auth/Auth";
 import {$} from "@core/dom"
 
 export class AuthPage extends Page {
-    constructor(params) {
+    constructor(params, store) {
         super(params)
+        this.store = store
     }
 
     getRoot() {
@@ -13,7 +14,7 @@ export class AuthPage extends Page {
         const $root = $.create('div', 'auth__form')
         this.auth = new Auth($root, {
             components: [],
-        })
+        }, this.store)
 
         $container.append(this.auth.getRoot())
 

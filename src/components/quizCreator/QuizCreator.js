@@ -3,8 +3,9 @@ import {Button} from '../ui/button/Button'
 import {Input} from '../ui/input/Input'
 import {Select} from '../ui/select/Select'
 import {QuizStateComponent} from '@core/QuizStateComponent'
-import {debounce} from '../../core/utils'
+import {debounce} from '@/core/utils'
 import {createformControls, validate, validateForm} from './quizCreator.form'
+import {createQuizQuestion, finishedCreateQuiz} from '@/storage/actions/create'
 // import is from 'is_js'
 // import axios from 'axios'
 
@@ -26,7 +27,6 @@ export class QuizCreator extends QuizStateComponent {
         this.onInput = debounce(this.onInput, 300)
 
         this.initState({
-            quiz: [],
             isFormValid: false,
             rightAnswerId: 1,
             formControls: createformControls()
@@ -101,9 +101,8 @@ export class QuizCreator extends QuizStateComponent {
         const $target = $(event.target)
         if ($target.data.type === 'primary') {
             this.addQuestionHandler(event)
-            console.log('add question: ', this.state.quiz)
         } else if ($target.data.type === 'success') {
-            console.log('state success: ', this.state)
+            this.addQueizHandler()
         }
     }
 
@@ -137,7 +136,7 @@ export class QuizCreator extends QuizStateComponent {
             new Button($button, {
                 type: 'success',
                 text: 'Создать тест',
-                disabled: this.state.quiz.length === 0
+                disabled: this.store.getState().quiz.length === 0
             }),
         ].map(button => button.toHTML()).join('')
     }
@@ -151,7 +150,7 @@ export class QuizCreator extends QuizStateComponent {
         ]
 
         const select = new Select($select, {
-            label: 'Выбирите праведьный ответ',
+            label: 'Выбирите правельный ответ',
             value: this.state.rightAnswerId,
             optionsParams: options,
             // onChange: this.selectChangeHandler
@@ -184,10 +183,7 @@ export class QuizCreator extends QuizStateComponent {
         event.preventDefoult()
     }
 
-    addQuestionHandler(event) {
-        const quiz = this.state.quiz.concat()
-        const index = quiz.length + 1
-
+    addQuestionHandler() {
         const {
             question,
             option1,
@@ -198,7 +194,7 @@ export class QuizCreator extends QuizStateComponent {
 
         const questionItem = {
             question: question.value,
-            id: index,
+            id: this.store.getState().quiz.length,
             rightAnswerId: this.state.rightAnswerId,
             answers: [
                 {text: option1.value, id: option1.id},
@@ -208,20 +204,21 @@ export class QuizCreator extends QuizStateComponent {
             ]
         }
 
-        quiz.push(questionItem)
+        this.$dispatch(createQuizQuestion(questionItem))
 
         this.setState({
-            quiz,
             isFormValid: false,
             rightAnswerId: 1,
             formControls: createformControls()
         })
     }
 
+    addQueizHandler() {
+        this.$dispatch(finishedCreateQuiz())
+    }
+
     onChange(event) {
         const $target = $(event.target)
-
-        console.log('store: ', this.store)
 
         if ($target.data.select) {
             this.setState({
