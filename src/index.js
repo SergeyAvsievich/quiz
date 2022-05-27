@@ -8,6 +8,7 @@ import {rootReducer} from './storage/reducers/rootReducer'
 import {applyMiddleware} from '@core/redux/applyMiddleware'
 import {thunk} from '@core/redux/thunk'
 import './styles/style.scss'
+import {TestListPage} from './pages/TestListPage'
 
 // const routes = [
 //     {path: '', element: AuthPage},
@@ -18,8 +19,6 @@ import './styles/style.scss'
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
-console.log('str: ', store)
-
 store.subscribe(state => {
     console.log('App State: ', state)
     storage('quiz-state', state)
@@ -28,5 +27,6 @@ store.subscribe(state => {
 new Router('#app', {
     auth: AuthPage,
     quiz: QuizPage,
-    creator: QuizCreatorPage
+    creator: QuizCreatorPage,
+    list: TestListPage
 }, store)
