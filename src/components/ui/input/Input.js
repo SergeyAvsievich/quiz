@@ -4,7 +4,7 @@ export class Input extends QuizComponent {
     constructor($root, options) {
         super($root, {
             name: 'Input',
-            listeners: ['input'],
+            listeners: [],
             ...options
         })
 
@@ -48,9 +48,5 @@ export class Input extends QuizComponent {
 
     init() {
         super.init()
-    }
-
-    onInput(event) {
-        this.value = event.target.value
     }
 }

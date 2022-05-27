@@ -2,6 +2,7 @@ import {initialState} from "../initialState"
 import {
     AUTH_LOGOUT,
     AUTH_SUCCESS,
+    CREATE_QUIZ_QUESTION,
     FETCH_QUIEZES_ERROR,
     FETCH_QUIEZES_START,
     FETCH_QUIEZES_SUCCESS,
@@ -9,7 +10,8 @@ import {
     FINISH_QUIZ,
     QUIZ_NEXT_QUESTION,
     QUIZ_RETRY,
-    QUIZ_SET_STATE
+    QUIZ_SET_STATE,
+    RESET_CREATE_QUIZ
 } from "../types"
 
 export function rootReducer(state = initialState, action){
@@ -70,6 +72,17 @@ export function rootReducer(state = initialState, action){
             return {
                 ...state, token: null
             }
+        case CREATE_QUIZ_QUESTION:
+            return {
+                ...state,
+                quiz: [...state.quiz, action.quizItem]
+            }
+        case RESET_CREATE_QUIZ: {
+            return {
+                ...state,
+                quiz: []
+            }
+        }
         default:
             return state
     }

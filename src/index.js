@@ -2,8 +2,11 @@ import {createStore} from './core/redux/createStore'
 import {Router} from './core/routing/Router'
 import {storage} from './core/utils'
 import {AuthPage} from './pages/AuthPage'
+import {QuizCreatorPage} from './pages/quizCreatorPage'
 import {QuizPage} from './pages/QuizPage'
 import {rootReducer} from './storage/reducers/rootReducer'
+import {applyMiddleware} from '@core/redux/applyMiddleware'
+import {thunk} from '@core/redux/thunk'
 import './styles/style.scss'
 
 // const routes = [
@@ -13,7 +16,7 @@ import './styles/style.scss'
 
 // проблема в передаче store, создаетьсч в компоненте Quiz
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 console.log('str: ', store)
 
@@ -24,5 +27,6 @@ store.subscribe(state => {
 
 new Router('#app', {
     auth: AuthPage,
-    quiz: QuizPage
+    quiz: QuizPage,
+    creator: QuizCreatorPage
 }, store)

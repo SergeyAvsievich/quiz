@@ -3,12 +3,11 @@ import {Button} from '../ui/button/Button'
 import {Input} from '../ui/input/Input'
 import {QuizStateComponent} from '@core/QuizStateComponent'
 import is from 'is_js'
-// import axios from 'axios'
-import {auth} from '../../storage/actions/auth'
-import {debounce} from '../../core/utils'
+import {auth} from '@/storage/actions/auth'
+import {debounce} from '@core/utils'
 
 export class Auth extends QuizStateComponent {
-    constructor($root, options) {
+    constructor($root, options, store) {
         super($root, {
             name: 'Form',
             listeners: ['input', 'click'],
@@ -17,7 +16,9 @@ export class Auth extends QuizStateComponent {
 
         this.$root = $root
         this.components = options.components || []
-        // this.store = options.store
+        this.store = store
+
+        console.log('store auth: ', this.store)
     }
 
     prepare() {
@@ -134,19 +135,17 @@ export class Auth extends QuizStateComponent {
     }
 
     loginHandler() {
-        // const email = this.state.formControls.email.value
-        // const password = this.state.formControls.password.value
+        const email = this.state.formControls.email.value
+        const password = this.state.formControls.password.value
 
-        // this.store.dispatch(auth(email, password, true))
-
-        console.log('state:', this.store)
+        this.$dispatch(auth(email, password, true))
     }
 
     registerHandler() {
         const email = this.state.formControls.email.value
         const password = this.state.formControls.password.value
 
-        auth(email, password, false)
+        this.$dispatch(auth(email, password, false))
     }
 
     renderInputs($input) {
