@@ -40,14 +40,12 @@ export function autoLogout(time) {
 }
 
 export function logout() {
-    console.log('logout dispatch')
     return {
         type: AUTH_LOGOUT,
     }
 }
 
 export function authSuccess(token) {
-    console.log('authSuccess dispatch')
     localStorage.removeItem('token')
     localStorage.removeItem('userId')
     localStorage.removeItem('expirationDate')

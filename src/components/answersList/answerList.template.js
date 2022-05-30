@@ -5,26 +5,24 @@ export function renderAnswersList(questions, activeQuestion) {
     const form = document.querySelector('.quiz-wrapper')
 
     form.innerHTML = `
-                <div>
-                    <div class="d-flex justify-content-between">
-                        <h3>
-                            ${questions[activeQuestion - 1]
-            .questionTitle}
-                        </h3>
-                        <small>
-                            Вопрос 1
-                            из ${questions.length}
-                        </small>
-                    </div>
-                    <ul>
-                        ${questions[activeQuestion - 1].answers
-            .map(answer => `
-                                <li data-answer="${answer.id}">
-                                    ${answer.title}
-                                </li>`)
-            .join('')}
-                    </ul>
+        <div>
+            <div class="d-flex justify-content-between">
+                <h3>
+                    ${questions[activeQuestion - 1].question}
+                </h3>
+                <small>
+                    Вопрос 1 из ${questions.length}
+                </small>
                 </div>
+                    <ul>
+                        ${questions[activeQuestion - 1].answers.map(answer => `
+                            <li data-answer="${answer.id}">
+                                ${answer.text}
+                            </li>`).join('')
+                        }
+                    </ul>
+            </div>
+        </div>
     `
 
     return form
@@ -32,6 +30,7 @@ export function renderAnswersList(questions, activeQuestion) {
 
 // думаю, лучше будет вынести создания списка ответов в один компонент
 export const renderFinishQuiz = (questions, answers) => {
+    console.log('answers: ', answers)
     const form = document.querySelector('.quiz-wrapper')
 
     form.innerHTML = `
@@ -44,26 +43,30 @@ export const renderFinishQuiz = (questions, answers) => {
                 из ${questions.length}
             </span>
             <ol>
-                ${finishetQuizList(questions, answers)}
+                ${finishedQuizList(questions, answers)}
             </ol>
             <button class="btn btn-primary me-2" data-retry="true">
                 Пройти тест заново
             </button>
-            <button class="btn btn-success">Перейти в список тестов</button>
+            <a
+                href="/#list" 
+                class="btn btn-success" 
+                data-return="true"
+            >Перейти в список тестов</a>
         </div>
         
     `
 }
 
-function finishetQuizList(questions, answers){
+function finishedQuizList(questions, answers){
     return answers.map((answer, index) => {
         return `
             <li>
-                ${questions[index].questionTitle} 
-                
+                ${questions[index].question} 
                 ${answer.rightAnswer
-                        ? "<i class='fas fa-check'></i>"
-                        : "<i class='fas fa-times'></i>"}
+                    ? "<i class='fas fa-check'></i>"
+                    : "<i class='fas fa-times'></i>"
+                }
             </li>
         `
     }).join('')

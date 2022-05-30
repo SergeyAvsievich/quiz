@@ -18,7 +18,8 @@ export class QuizPage extends Page {
         // нужном порядке компоненты
         this.quiz = new Quiz({
             components: [Navbar, AnswersList],
-            store: this.store
+            store: this.store,
+            params: this.params
         })
 
         return this.quiz.getRoot()

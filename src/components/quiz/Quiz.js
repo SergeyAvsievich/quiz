@@ -5,6 +5,7 @@ export class Quiz {
     constructor(options) {
         this.components = options.components || []
         this.store = options.store
+        this.params = options.params
         // this.subscriber = new StoreSubscriber(this.store)
     }
 
@@ -16,7 +17,8 @@ export class Quiz {
         // console.log('this.store: ', this.store)
 
         const componentOptions = {
-            store: this.store
+            store: this.store,
+            params: this.params
         }
 
         // пробтгаемся по компонентам, создаем для них div

@@ -37,7 +37,7 @@ export class QuizComponent extends DomListener{
     }
 
     destroy(){
-        this.removeDOMListener()
-        this.onSubscribers.forEach(unsub => unsub())
+        this.removeDOMListeners()
+        // this.onSubscribers.forEach(unsub => unsub())
     }
 }

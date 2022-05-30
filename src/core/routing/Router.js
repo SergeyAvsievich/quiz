@@ -25,7 +25,9 @@ export class Router {
         }
 
         Object.keys(this.routes).forEach(route => {
-            if (route === ActiveRout.path) {
+            const activeRoute = ActiveRout.params.join('/')
+
+            if (activeRoute.includes(route)) {
                 const Page = this.routes[route]
                 this.page = new Page(ActiveRout.params, this.store)
                 this.$root.clear()

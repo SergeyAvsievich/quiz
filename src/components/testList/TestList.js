@@ -1,7 +1,7 @@
 import {$} from '@core/dom'
 import {QuizStateComponent} from '@core/QuizStateComponent'
 import {fetchQuizes} from '../../storage/actions/action'
-import {Navbar} from '../navbar/Navbar'
+// import {Navbar} from '../navbar/Navbar'
 
 export class TestList extends QuizStateComponent {
     constructor($root, options, store) {
@@ -25,7 +25,7 @@ export class TestList extends QuizStateComponent {
     }
 
     createTemplaeteFormAuth() {
-        const $navbar = $.create('div')
+        // const $navbar = $.create('div')
         const $body = $.create('div')
 
         $body.html(`
@@ -33,7 +33,7 @@ export class TestList extends QuizStateComponent {
             ${this.renderTestList()}
         `)
 
-        this.$root.append($navbar)
+        // this.$root.append($navbar)
         this.$root.append($body)
 
         return this.$root
@@ -56,12 +56,13 @@ export class TestList extends QuizStateComponent {
     renderTestList() {
         const quizes = this.store.getState().quizes
         return Object.values(quizes).map(el => {
-            return `<p>${el.name}</p>`
+            // return `<a href="/#quiz/${el.id}">${el.name}</a>`
+            return `<a href="/#quiz/${el.id}">${el.name}</a>`
         }).join(' ')
     }
 
     renderNavbar() {
-        return new Navbar().toHTML()
+        // return new Navbar().toHTML()
     }
 
     destroy(){

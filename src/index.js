@@ -9,6 +9,7 @@ import {applyMiddleware} from '@core/redux/applyMiddleware'
 import {thunk} from '@core/redux/thunk'
 import './styles/style.scss'
 import {TestListPage} from './pages/TestListPage'
+import {ActiveRout} from './core/routing/ActiveRouter'
 
 // const routes = [
 //     {path: '', element: AuthPage},
@@ -24,9 +25,11 @@ store.subscribe(state => {
     storage('quiz-state', state)
 })
 
+const id = ActiveRout.params.slice(1)
+
 new Router('#app', {
     auth: AuthPage,
-    quiz: QuizPage,
+    [`quiz/${id}`]: QuizPage,
     creator: QuizCreatorPage,
     list: TestListPage
 }, store)
