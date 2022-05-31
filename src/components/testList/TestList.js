@@ -1,6 +1,7 @@
 import {$} from '@core/dom'
 import {QuizStateComponent} from '@core/QuizStateComponent'
 import {fetchQuizes} from '../../storage/actions/action'
+import {Loader} from '../ui/loader/Loader'
 // import {Navbar} from '../navbar/Navbar'
 
 export class TestList extends QuizStateComponent {
@@ -14,26 +15,37 @@ export class TestList extends QuizStateComponent {
         this.$root = $root
         this.components = options.components || []
         this.store = store
-
+        this.loader = new Loader().toHTML()
         this.getQuizes()
     }
 
     prepare() {}
 
     get template() {
-        return this.createTemplaeteFormAuth()
+        this.$root.append(this.loader)
+        return this.createTemplaeteListTest()
     }
 
-    createTemplaeteFormAuth() {
-        // const $navbar = $.create('div')
-        const $body = $.create('div')
+    createTemplaeteListTest() {
+        this.store.subscribe(state => {
+            if (!state.loading) {
+                this.$root.clear('')
+                this.createTemplaeteListTest()
+            }
+        })
+
+        const $body = $.create('div', 'test-list')
 
         $body.html(`
-            <h1>TestList</h1>
-            ${this.renderTestList()}
+            <div>
+                <h1>Список тестов</h1>
+                <ul>
+                    ${this.renderTestList()}
+                </ul>
+            </div>
         `)
 
-        // this.$root.append($navbar)
+        // this.$root.append(this.renderNavbar())
         this.$root.append($body)
 
         return this.$root
@@ -46,23 +58,42 @@ export class TestList extends QuizStateComponent {
     init() {
         // this.subscriber.subscribeComponents(this.components)
         super.init()
+
         this.components.forEach(component => component.init())
     }
 
     getQuizes() {
-        this.$dispatch(fetchQuizes())
+        return new Promise((r) => {
+            this.$dispatch(fetchQuizes())
+            r()
+        })
     }
 
     renderTestList() {
         const quizes = this.store.getState().quizes
         return Object.values(quizes).map(el => {
             // return `<a href="/#quiz/${el.id}">${el.name}</a>`
-            return `<a href="/#quiz/${el.id}">${el.name}</a>`
+            return `<li><a href="/#quiz/${el.id}">${el.name}</a></li>`
         }).join(' ')
     }
 
     renderNavbar() {
-        // return new Navbar().toHTML()
+        const componentOptions = {
+            store: this.store,
+            params: this.params
+        }
+
+        let $el
+
+        // пробтгаемся по компонентам, создаем для них div
+        this.components = this.components.map(Component => {
+            $el = $.create('div', Component.className)
+            const component = new Component($el, componentOptions)
+            $el.html(component.toHTML())
+            return component
+        })
+
+        return $el
     }
 
     destroy(){

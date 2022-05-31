@@ -1,0 +1,14 @@
+.test-list {
+    min-height: 100vh - $navbar-height;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & > div {
+        transform: translateY(-200px);
+    }
+
+    & ul {
+        @include clear-list();
+        text-align: center;
+    }
+}

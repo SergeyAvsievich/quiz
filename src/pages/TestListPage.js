@@ -1,6 +1,7 @@
 import {Page} from "@core/Page"
 import {TestList} from "../components/testList/TestList"
 import {$} from '@core/dom'
+// import {Navbar} from '@/components/navbar/Navbar'
 
 export class TestListPage extends Page {
     constructor(params, store){

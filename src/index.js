@@ -22,6 +22,7 @@ const store = createStore(rootReducer, applyMiddleware(thunk))
 
 store.subscribe(state => {
     console.log('App State: ', state)
+
     storage('quiz-state', state)
 })
 

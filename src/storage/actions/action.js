@@ -137,11 +137,3 @@ export function finishedQuiz(answer){
         answer
     }
 }
-
-export function isFinishedQuestion(state){
-    return state.activeQuestion === state.questions.length
-}
-
-export function isRightAnswer(answerId, questions, activeQuestion){
-    return +answerId === questions[activeQuestion - 1].rightAnswer
-}
