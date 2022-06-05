@@ -15,6 +15,7 @@ export class TestList extends QuizStateComponent {
         this.$root = $root
         this.components = options.components || []
         this.store = store
+        this.subscriber = this.store.subscribe
         this.loader = new Loader().toHTML()
         this.getQuizes()
     }
@@ -27,12 +28,15 @@ export class TestList extends QuizStateComponent {
     }
 
     createTemplaeteListTest() {
-        this.store.subscribe(state => {
+        console.log('call createTemplateListTest')
+        this.subscriber(state => {
             if (!state.loading) {
-                this.$root.clear('')
+                this.$root.clear()
                 this.createTemplaeteListTest()
             }
         })
+
+        this.subscriber()()
 
         const $body = $.create('div', 'test-list')
 
@@ -63,6 +67,7 @@ export class TestList extends QuizStateComponent {
     }
 
     getQuizes() {
+        console.log('call getQuizes')
         return new Promise((r) => {
             this.$dispatch(fetchQuizes())
             r()

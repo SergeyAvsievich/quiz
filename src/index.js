@@ -7,9 +7,9 @@ import {QuizPage} from './pages/QuizPage'
 import {rootReducer} from './storage/reducers/rootReducer'
 import {applyMiddleware} from '@core/redux/applyMiddleware'
 import {thunk} from '@core/redux/thunk'
-import './styles/style.scss'
 import {TestListPage} from './pages/TestListPage'
-import {ActiveRout} from './core/routing/ActiveRouter'
+import {ActiveRoute} from './core/routing/ActiveRouter'
+import './styles/style.scss'
 
 // const routes = [
 //     {path: '', element: AuthPage},
@@ -26,11 +26,12 @@ store.subscribe(state => {
     storage('quiz-state', state)
 })
 
-const id = ActiveRout.params.slice(1)
+const defaultRout = ''
+const id = ActiveRoute.params.slice(1)
 
 new Router('#app', {
-    auth: AuthPage,
+    [defaultRout]: TestListPage,
     [`quiz/${id}`]: QuizPage,
+    auth: AuthPage,
     creator: QuizCreatorPage,
-    list: TestListPage
 }, store)
