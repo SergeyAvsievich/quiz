@@ -1,7 +1,7 @@
 import {Page} from "@core/Page"
 import {TestList} from "../components/testList/TestList"
 import {$} from '@core/dom'
-// import {Navbar} from '@/components/navbar/Navbar'
+import {Navbar} from '@/components/navbar/Navbar'
 
 export class TestListPage extends Page {
     constructor(params, store){
@@ -13,7 +13,7 @@ export class TestListPage extends Page {
     getRoot() {
         const $root = $.create('div', 'test__list')
         this.testList = new TestList($root, {
-            components: [],
+            components: [Navbar],
         }, this.store)
 
         return this.testList.getRoot()

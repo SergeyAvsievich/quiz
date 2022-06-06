@@ -1,7 +1,7 @@
 import {$} from '@core/dom'
 import {QuizStateComponent} from '@core/QuizStateComponent'
 import {fetchQuizes} from '../../storage/actions/action'
-import {Loader} from '../ui/loader/Loader'
+// import {Loader} from '../ui/loader/Loader'
 // import {Navbar} from '../navbar/Navbar'
 
 export class TestList extends QuizStateComponent {
@@ -16,27 +16,27 @@ export class TestList extends QuizStateComponent {
         this.components = options.components || []
         this.store = store
         this.subscriber = this.store.subscribe
-        this.loader = new Loader().toHTML()
         this.getQuizes()
+        // this.loader = new Loader().toHTML()
     }
 
     prepare() {}
 
     get template() {
-        this.$root.append(this.loader)
+        // this.$root.append(this.loader)
         return this.createTemplaeteListTest()
     }
 
     createTemplaeteListTest() {
         console.log('call createTemplateListTest')
-        this.subscriber(state => {
-            if (!state.loading) {
-                this.$root.clear()
-                this.createTemplaeteListTest()
-            }
-        })
+        // this.subscriber(state => {
+        //     if (!state.loading) {
+        //         this.$root.clear()
+        //         // this.createTemplaeteListTest()
+        //     }
+        // })
 
-        this.subscriber()()
+        // this.subscriber()()
 
         const $body = $.create('div', 'test-list')
 
@@ -49,7 +49,7 @@ export class TestList extends QuizStateComponent {
             </div>
         `)
 
-        // this.$root.append(this.renderNavbar())
+        this.$root.append(this.renderNavbar())
         this.$root.append($body)
 
         return this.$root

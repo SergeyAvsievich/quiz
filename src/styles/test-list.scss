@@ -1,14 +1,40 @@
+@import 'variables';
+@import 'mixins';
+
 .test-list {
+    // background: linear-gradient(45deg, #FC2C78 45%, #6D4077 100%);
+    // background: linear-gradient(315deg, rgba(252, 182, 159, 1), rgba(253, 160, 133, 1));
+    // background: linear-gradient(270deg, rgba(72, 198, 239, 1), rgba(111, 134, 214, 1));
+    // background: linear-gradient(70deg, 	rgb(49,174,175), rgb(40,82,177));
+    // background: linear-gradient(80deg, rgba(67, 233, 123, 1), rgb(150, 230, 182));
+    // background: linear-gradient(15deg, rgba(230, 233, 240, 1), rgba(238, 241, 245, 1));
     min-height: 100vh - $navbar-height;
+    height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
     & > div {
-        transform: translateY(-200px);
+        transform: translateY(50px);
     }
 
     & ul {
         @include clear-list();
         text-align: center;
+        li {
+            margin-top: 3px;
+        }
+    }
+
+    a {
+        color: #fff;
+
+        &:hover {
+            color: #ddd;
+        }
+    }
+
+
+
+    & h1{
+        color: #fff;
     }
 }

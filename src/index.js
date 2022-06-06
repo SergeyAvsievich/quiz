@@ -32,6 +32,6 @@ const id = ActiveRoute.params.slice(1)
 new Router('#app', {
     [defaultRout]: TestListPage,
     [`quiz/${id}`]: QuizPage,
-    auth: AuthPage,
+    admin: AuthPage,
     creator: QuizCreatorPage,
 }, store)
