@@ -142,7 +142,6 @@ export class Auth extends QuizStateComponent {
         setTimeout(() => {
             const admin = this.store.getState().token
             if (admin) {
-                console.log('admin: ', admin)
                 window.location.href = '/#'
             } else {
                 window.location.href = '/#error'

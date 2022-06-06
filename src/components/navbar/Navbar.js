@@ -1,7 +1,21 @@
 import {QuizComponent} from "@core/QuizComponent";
+import {logout} from "@/storage/actions/auth";
+import {$} from "@core/dom"
 
-export class Navbar extends QuizComponent{
+export class Navbar extends QuizComponent {
     static className = 'quiz__navbar'
+
+    constructor($root, options) {
+        super($root, {
+            name: 'Form',
+            listeners: ['click'],
+            ...options
+        })
+
+        this.$root = $root
+        this.store = options.store
+    }
+
     toHTML(){
         return `
         <nav class="navbar-expand-lg navbar-dark">
@@ -43,9 +57,11 @@ export class Navbar extends QuizComponent{
                                 Создать тест
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item"
+                        >
                             <a class="nav-link"
                                 href="/#"
+                                data-type="logout"
                             >
                                 <i class="fas fa-sign-out-alt"></i>
                                 Выход
@@ -56,5 +72,16 @@ export class Navbar extends QuizComponent{
             </div>
         </nav>
         `
+    }
+
+    onClick(event) {
+        const $target = $(event.target)
+        if ($target.data.type === 'logout') {
+            this.logoutHandler()
+        }
+    }
+
+    logoutHandler() {
+        this.$dispatch(logout())
     }
 }

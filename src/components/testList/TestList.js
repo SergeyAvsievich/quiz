@@ -20,7 +20,7 @@ export class TestList extends QuizStateComponent {
         // this.loader = new Loader().toHTML()
     }
 
-    prepare() {}
+    prepare() { }
 
     get template() {
         // this.$root.append(this.loader)
@@ -83,6 +83,10 @@ export class TestList extends QuizStateComponent {
     }
 
     renderNavbar() {
+        if (!this.components.length) {
+            return ''
+        }
+
         const componentOptions = {
             store: this.store,
             params: this.params
@@ -101,7 +105,7 @@ export class TestList extends QuizStateComponent {
         return $el
     }
 
-    destroy(){
+    destroy() {
         // this.subscriber.unSubscribeFromStore()
         this.components.forEach(component => component.destroy())
     }
@@ -115,5 +119,5 @@ export class TestList extends QuizStateComponent {
         }
     }
 
-    renderLinks() {}
+    renderLinks() { }
 }
