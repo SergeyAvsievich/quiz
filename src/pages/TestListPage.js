@@ -1,36 +1,42 @@
 import {Page} from "@core/Page"
-import {TestList} from "../components/testList/TestList"
+import {
+    TestListContainer
+} from "../components/testListContainer/TestListContainer"
 import {$} from '@core/dom'
-import {Navbar} from '@/components/navbar/Navbar'
+import {StoreSubscriber} from "@core/redux/StoreSubscriber"
+// import {Navbar} from '@/components/navbar/Navbar'
 
 export class TestListPage extends Page {
     constructor(params, store){
         super(params)
         this.params = params
         this.store = store
+        this.subscriber = new StoreSubscriber(this.store)
     }
 
     getRoot() {
-        const $root = $.create('div', 'test__list')
-        const admin = this.store.getState().token
-        const components = []
+        const $root = $.create('div', TestListContainer.className)
+        // const admin = this.store.getState().token
 
-        if (admin) {
-            components.push(Navbar)
-        }
+        // if (admin) {
+        //     components.push(Navbar)
+        // }
 
-        this.testList = new TestList($root, {
-            components,
-        }, this.store)
+        this.testListContainer = new TestListContainer($root, {
+            store: this.store,
+            params: this.params
+        })
 
-        return this.testList.getRoot()
+        return this.testListContainer.getRoot()
     }
 
     afterRender() {
-        this.testList.init()
+        this.testListContainer.init()
+        this.subscriber.subscribeComponents([this.testListContainer])
     }
 
     destroy() {
-        this.testList.destroy()
+        this.subscriber.unSubscribeFromStore()
+        this.testListContainer.destroy()
     }
 }

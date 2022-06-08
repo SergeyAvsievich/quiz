@@ -1,15 +1,38 @@
-import {$} from "@core/dom";
+import {QuizComponent} from "@core/QuizComponent"
 
-export class Loader {
-    constructor() {
-        this.loader = $.create('div', 'loader')
+export class Loader extends QuizComponent {
+    static className = 'Loader'
+
+    constructor($root, options) {
+        super($root, {
+            name: 'Loader',
+            listeners: [],
+            ...options
+        })
+    }
+
+    get template() {
+        return this.toHTML()
     }
 
     toHTML() {
-        return this.loader.html(`
+        return `
             <div class="loader-container">
                 <div class="ldr"></div>
             </div>
-        `)
+        `
+    }
+
+    getRoot() {
+        return this.template
+    }
+
+    init() {
+        super.init()
+    }
+
+    destroy() {
+        console.log('loader destroy')
+        super.destroy()
     }
 }

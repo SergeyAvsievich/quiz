@@ -55,6 +55,7 @@ export class AnswersList extends QuizStateComponent {
 
         this.params = options.params
         this.quiz = {}
+        // this.getQuiz()
     }
 
     prepare() {}
@@ -73,25 +74,23 @@ export class AnswersList extends QuizStateComponent {
 
     init() {
         super.init()
-
-        const quiz = this.getQuizDate()
-        console.log('quiz: ', quiz)
-
-        renderAnswersList(
-            quiz,
-            this.store.getState().activeQuestion
-        )
+        console.log('init')
+        this.getQuiz()
+        setTimeout(() => {
+            this.quiz = this.store.getState().quiz
+            const quiz = this.quiz
+            console.log('quiz: ', quiz)
+            renderAnswersList(
+                quiz,
+                this.store.getState().activeQuestion
+            )
+        }, 2000)
     }
 
-    getQuizDate() {
-        console.log('params: ', this.params)
+    getQuiz() {
         const quizId = this.params[1]
+        console.log('params: ', quizId)
         this.$dispatch(fetchQuizById(quizId))
-        console.log('store: ', this.store.getState())
-        this.quiz = this.store.getState().quiz
-
-        console.log('quizzz: ', this.quiz)
-        return this.quiz
     }
 
     selectAnswer(event) {

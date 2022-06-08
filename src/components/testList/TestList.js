@@ -1,58 +1,44 @@
 import {$} from '@core/dom'
 import {QuizStateComponent} from '@core/QuizStateComponent'
-import {fetchQuizes} from '../../storage/actions/action'
 // import {Loader} from '../ui/loader/Loader'
 // import {Navbar} from '../navbar/Navbar'
 
 export class TestList extends QuizStateComponent {
-    constructor($root, options, store) {
+    static className = 'test-list__list'
+    constructor($root, options) {
         super($root, {
             name: 'TestList',
-            listeners: ['click'],
+            listeners: [],
             ...options
         })
 
         this.$root = $root
-        this.components = options.components || []
-        this.store = store
-        this.subscriber = this.store.subscribe
-        this.getQuizes()
+        this.store = options.store
         // this.loader = new Loader().toHTML()
     }
 
-    prepare() { }
+    prepare() {
+        this.initState({
+            loading: this.store.getState().loading
+        })
+    }
 
     get template() {
         // this.$root.append(this.loader)
-        return this.createTemplaeteListTest()
+        return this.toHTML()
     }
 
-    createTemplaeteListTest() {
-        console.log('call createTemplateListTest')
-        // this.subscriber(state => {
-        //     if (!state.loading) {
-        //         this.$root.clear()
-        //         // this.createTemplaeteListTest()
-        //     }
-        // })
-
-        // this.subscriber()()
-
-        const $body = $.create('div', 'test-list')
-
-        $body.html(`
-            <div>
+    toHTML() {
+        // console.log('call toHTML TestList')
+        const $template = $.create('div')
+        $template.html(`
                 <h1>Список тестов</h1>
                 <ul>
                     ${this.renderTestList()}
                 </ul>
-            </div>
         `)
 
-        this.$root.append(this.renderNavbar())
-        this.$root.append($body)
-
-        return this.$root
+        return this.$root.append($template)
     }
 
     getRoot() {
@@ -60,18 +46,11 @@ export class TestList extends QuizStateComponent {
     }
 
     init() {
-        // this.subscriber.subscribeComponents(this.components)
         super.init()
-
-        this.components.forEach(component => component.init())
     }
 
-    getQuizes() {
-        console.log('call getQuizes')
-        return new Promise((r) => {
-            this.$dispatch(fetchQuizes())
-            r()
-        })
+    storeChanged(changes) {
+        // console.log('Test changes', changes)
     }
 
     renderTestList() {
@@ -82,42 +61,16 @@ export class TestList extends QuizStateComponent {
         }).join(' ')
     }
 
-    renderNavbar() {
-        if (!this.components.length) {
-            return ''
-        }
-
-        const componentOptions = {
-            store: this.store,
-            params: this.params
-        }
-
-        let $el
-
-        // пробтгаемся по компонентам, создаем для них div
-        this.components = this.components.map(Component => {
-            $el = $.create('div', Component.className)
-            const component = new Component($el, componentOptions)
-            $el.html(component.toHTML())
-            return component
-        })
-
-        return $el
-    }
+    // onClick(event) {
+    //     const $target = $(event.target)
+    //     if ($target.data.type === 'success') {
+    //         // this.registerHandler()
+    //     } else if ($target.data.type === 'secondary') {
+    //         // this.loginHandler()
+    //     }
+    // }
 
     destroy() {
-        // this.subscriber.unSubscribeFromStore()
-        this.components.forEach(component => component.destroy())
+        super.destroy()
     }
-
-    onClick(event) {
-        const $target = $(event.target)
-        if ($target.data.type === 'success') {
-            // this.registerHandler()
-        } else if ($target.data.type === 'secondary') {
-            // this.loginHandler()
-        }
-    }
-
-    renderLinks() { }
 }

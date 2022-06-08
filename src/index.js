@@ -21,13 +21,15 @@ import './styles/style.scss'
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 store.subscribe(state => {
-    console.log('App State: ', state)
+    // console.log('App State: ', state)
 
     storage('quiz-state', state)
 })
 
 const defaultRout = ''
 const id = ActiveRoute.params.slice(1)
+
+console.log('INDEX: ', `quiz/${id}`)
 
 new Router('#app', {
     [defaultRout]: TestListPage,

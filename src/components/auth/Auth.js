@@ -17,8 +17,6 @@ export class Auth extends QuizStateComponent {
         this.$root = $root
         this.components = options.components || []
         this.store = store
-
-        console.log('store auth: ', this.store)
     }
 
     prepare() {
