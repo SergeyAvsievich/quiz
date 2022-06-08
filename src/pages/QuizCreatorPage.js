@@ -16,8 +16,6 @@ export class QuizCreatorPage extends Page {
             components: [],
         }, this.store)
 
-        console.log('store quizcreatorpage: ', this.store)
-
         $container.append(this.quizCreator.getRoot())
 
         return $container
@@ -28,6 +26,6 @@ export class QuizCreatorPage extends Page {
     }
 
     destroy() {
-        this.quiz.destroy()
+        this.quizCreator.destroy()
     }
 }

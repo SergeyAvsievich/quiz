@@ -17,12 +17,9 @@ export class Auth extends QuizStateComponent {
         this.$root = $root
         this.components = options.components || []
         this.store = store
-
-        console.log('store auth: ', this.store)
     }
 
     prepare() {
-        // будет ли данные получать через debounce
         this.onInput = debounce(this.onInput, 300)
 
         this.initState({
@@ -139,6 +136,15 @@ export class Auth extends QuizStateComponent {
         const password = this.state.formControls.password.value
 
         this.$dispatch(auth(email, password, true))
+
+        setTimeout(() => {
+            const admin = this.store.getState().token
+            if (admin) {
+                window.location.href = '/#'
+            } else {
+                window.location.href = '/#error'
+            }
+        }, 1000)
     }
 
     registerHandler() {

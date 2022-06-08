@@ -1,7 +1,13 @@
-// fonts
-
 @import 'variables';
 @import 'mixins';
+
+.loader {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .loader-container {
     position: absolute;
@@ -11,7 +17,7 @@
     width: 100%;
     height: 90vh;
 
-    & .loader {
+    & .ldr {
         display: inline-block;
         position: relative;
         width: 80px;
@@ -45,4 +51,4 @@
     100% {
       transform: rotate(1800deg);
     }
-  }
+}

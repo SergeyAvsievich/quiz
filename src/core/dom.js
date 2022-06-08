@@ -40,6 +40,10 @@ class Dom {
         return this
     }
 
+    remove(){
+        this.$el.remove()
+    }
+
     get data() {
         return this.$el.dataset
     }

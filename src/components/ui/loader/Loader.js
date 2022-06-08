@@ -1,21 +1,38 @@
-import {QuizComponent} from "@core/QuizComponent";
+import {QuizComponent} from "@core/QuizComponent"
 
-export class Loader extends QuizComponent{
-    static className = 'quiz__loader'
+export class Loader extends QuizComponent {
+    static className = 'Loader'
 
     constructor($root, options) {
         super($root, {
+            name: 'Loader',
             listeners: [],
-            // subscribe: ['answerState', 'activeQuestion'], подписки
-            // на изменения состояния с другими компонентами
             ...options
         })
     }
-    toHTML(){
+
+    get template() {
+        return this.toHTML()
+    }
+
+    toHTML() {
         return `
             <div class="loader-container">
-                <div class="loader"></div>
+                <div class="ldr"></div>
             </div>
         `
+    }
+
+    getRoot() {
+        return this.template
+    }
+
+    init() {
+        super.init()
+    }
+
+    destroy() {
+        console.log('loader destroy')
+        super.destroy()
     }
 }

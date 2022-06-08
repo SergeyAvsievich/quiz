@@ -26,6 +26,6 @@ export class AuthPage extends Page {
     }
 
     destroy() {
-        this.quiz.destroy()
+        this.auth.destroy()
     }
 }

@@ -8,8 +8,10 @@
 
     function subscribe(callback){
         subscribers.push(callback)
-        return () => {
-            subscribers = subscribers.filter(s => s !== callback)
+        return {
+            unsubscribe() {
+                subscribers = subscribers.filter(s => s !== callback)
+            }
         }
     }
 

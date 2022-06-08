@@ -1,5 +1,5 @@
 import {$} from '@core/dom'
-import {ActiveRout} from './ActiveRouter'
+import {ActiveRoute} from './ActiveRouter'
 
 export class Router {
     constructor(selector, routes, store) {
@@ -25,9 +25,14 @@ export class Router {
         }
 
         Object.keys(this.routes).forEach(route => {
-            if (route === ActiveRout.path) {
+            const activeRoute = ActiveRoute.params.join('/')
+
+            console.log('route: ', route)
+            console.log('activeRoute: ', activeRoute)
+
+            if (activeRoute.includes(route)) {
                 const Page = this.routes[route]
-                this.page = new Page(ActiveRout.params, this.store)
+                this.page = new Page(ActiveRoute.params, this.store)
                 this.$root.clear()
                 this.$root.append(this.page.getRoot())
                 this.page.afterRender()

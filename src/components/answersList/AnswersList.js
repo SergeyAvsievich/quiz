@@ -3,15 +3,17 @@ import {
     isFinishedQuestion,
     isRightAnswer,
     shouldAnswer,
-    shouldRetry
+    shouldRetry,
+    shouldReturn
 } from "./answerList.functions"
 import {
+    fetchQuizById,
     finishedQuiz, nextQuestion, quizRetry
 } from "../../storage/actions/action"
 // import {db, getQuiz} from "../../firebase/firebase"
 import {QuizStateComponent} from "../../core/QuizStateComponent"
 import {$} from "../../core/dom"
-import axios from "axios"
+// import axios from "../../axios/axios-quiz"
 
 // const quizes = {
 //     // currentQuestion: 1,
@@ -51,20 +53,14 @@ export class AnswersList extends QuizStateComponent {
             ...options
         })
 
+        this.params = options.params
         this.quiz = {}
+        // this.getQuiz()
     }
 
-    prepare() {
-        // если нужно
-        // const initialState = {}
-        this.initState({})
-    }
+    prepare() {}
 
     get template() {
-        // сформировать шпблон в йункцию и передать this.state
-        // Например, createTemplate(this.state)
-        // Использование setState
-        // this.setState({key: value})
         return `
         <div class="container d-flex justify-content-center mt-5">
             <div class="quiz-wrapper"></div>
@@ -78,50 +74,32 @@ export class AnswersList extends QuizStateComponent {
 
     init() {
         super.init()
-
-        // наверное правильно асинхронный метод вызывать здесь
-        // ненравится, присвоение this.quiz = item[0]
-        // пока так, но нужно переработать
-        console.log('this.store: ', this.store.getState())
-        this.getQuizDate().then(quiz => {
+        console.log('init')
+        this.getQuiz()
+        setTimeout(() => {
+            this.quiz = this.store.getState().quiz
+            const quiz = this.quiz
+            console.log('quiz: ', quiz)
             renderAnswersList(
-                quiz.questions,
+                quiz,
                 this.store.getState().activeQuestion
             )
-        })
-
-        // console.log('quiz questions: ', this.quizes)
-        // renderAnswersList(
-        //     this.getQuizDate().questions,
-        //     // this.quiz.questions,
-        //     this.store.getState().activeQuestion
-        // )
+        }, 2000)
     }
 
-    async getQuizDate() {
-        try {
-            const response = await axios.get('https://quiz-js-5d6a6-default-rtdb.firebaseio.com/questions.json')
-            this.quiz.questions = response.data
-            console.log('data: ', response.data)
-            console.log('data: ', this.quiz)
-            return this.quiz
-        } catch (e) {
-            console.log('error: ', e)
-        }
+    getQuiz() {
+        const quizId = this.params[1]
+        console.log('params: ', quizId)
+        this.$dispatch(fetchQuizById(quizId))
     }
 
     selectAnswer(event) {
-        const quiz = this.quiz
-        const questions = this.quiz.questions
         const $target = $(event.target)
-        const state = this.store.getState()
+        const quiz = this.quiz
+        const quizId = $target.data.answer
+        const activeQuestion = this.store.getState().activeQuestion
 
-        if (isRightAnswer(
-            $target.data.answer,
-            quiz,
-            state.activeQuestion
-        )
-        ) {
+        if (isRightAnswer(quizId, quiz, activeQuestion)) {
             $target.addClass('success')
             this.$dispatch(finishedQuiz({rightAnswer: true}))
         } else {
@@ -131,29 +109,25 @@ export class AnswersList extends QuizStateComponent {
 
         setTimeout(() => {
             this.$dispatch(nextQuestion())
-            if (isFinishedQuestion(
-                questions,
-                this.store.getState().activeQuestion)
-            ) {
-                renderAnswersList(
-                    questions,
-                    this.store.getState().activeQuestion
-                )
+            const activeQuestion = this.store.getState().activeQuestion
+            const answerState = this.store.getState().answerState
+
+            if (isFinishedQuestion(quiz, activeQuestion)) {
+                renderAnswersList(quiz, activeQuestion)
             } else {
-                renderFinishQuiz(questions, this.store.getState().answerState)
+                renderFinishQuiz(quiz, answerState)
             }
         }, 1000)
     }
 
     retryHendler() {
-        const quiz = this.quiz
-        const questions = quiz.questions
-
         this.$dispatch(quizRetry())
-        renderAnswersList(questions, this.store.getState().activeQuestion)
-    }
 
-    storeChanged({activeQuestion, answerState}) { }
+        const quiz = this.quiz
+        const activeQuestion = this.store.getState().activeQuestion
+
+        renderAnswersList(quiz, activeQuestion)
+    }
 
     onClick(event) {
         if (shouldAnswer(event)) {
@@ -163,5 +137,13 @@ export class AnswersList extends QuizStateComponent {
         if (shouldRetry(event)) {
             this.retryHendler()
         }
+
+        if (shouldReturn(event)) {
+            this.$dispatch(quizRetry())
+        }
+    }
+
+    destroy() {
+        super.destroy()
     }
 }

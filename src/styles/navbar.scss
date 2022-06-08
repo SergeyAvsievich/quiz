@@ -8,9 +8,18 @@ nav {
     // background: #ff8f00; 
     // background-color: #fdd835;
     // background: linear-gradient(90deg, #1e53e5 90%, #1976d2);
-    background: $navbar-color;
+    // background: linear-gradient(70deg, 	rgb(49,174,175), rgb(40,82,177));
     // background: linear-gradient(45deg,  #FC2C78 45%, #6D4077 100%);
-    .fa-user-circle {
-        font-size: 24px;
+    font-size: 20px;
+    border-bottom: solid 1.5px rgba(255, 255, 255, 0.4);
+    .container {
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+        align-items: center;
+        h2{
+            color: #fff;
+            font-size: 30px;
+        }
     }
 }
