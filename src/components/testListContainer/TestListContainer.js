@@ -3,6 +3,7 @@ import {QuizStateComponent} from '@core/QuizStateComponent'
 import {fetchQuizes} from '../../storage/actions/action'
 import {TestList} from "../testList/TestList"
 import {Loader} from "../ui/loader/Loader"
+import {Navbar} from "../navbar/Navbar"
 
 export class TestListContainer extends QuizStateComponent {
     static className = 'test-list'
@@ -14,7 +15,7 @@ export class TestListContainer extends QuizStateComponent {
             ...options
         })
 
-        this.Components = [Loader]
+        this.Components = [Navbar, Loader]
         this.components = []
         this.store = options.store
         this.params = options.params
@@ -67,6 +68,7 @@ export class TestListContainer extends QuizStateComponent {
         this.$root.clear()
         this.Components.push(TestList)
         this.getRoot()
+        this.components.forEach(component => component.init())
     }
 
     init() {

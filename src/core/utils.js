@@ -35,3 +35,7 @@ export function debounce(fn, wait) {
         timeout = setTimeout(later, wait)
     }
 }
+
+export function navigate(way) {
+    return window.location.href = `/#${way}`
+}

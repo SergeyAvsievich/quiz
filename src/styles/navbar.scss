@@ -17,9 +17,14 @@ nav {
         justify-content: space-between;
         height: 100%;
         align-items: center;
-        h2{
+        h4{
             color: #fff;
-            font-size: 30px;
+            font-size: 25px;
+        }
+
+        a:hover {
+            font-size: 23px;
+            color: #fff!important;
         }
     }
 }

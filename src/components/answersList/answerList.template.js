@@ -13,7 +13,7 @@ export function renderAnswersList(questions, activeQuestion) {
                     ${questions[activeQuestion - 1].question}
                 </h3>
                 <small>
-                    Вопрос 1 из ${questions.length}
+                    Вопрос ${activeQuestion} из ${questions.length}
                 </small>
                 </div>
                     <ul>

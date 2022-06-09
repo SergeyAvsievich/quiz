@@ -6,6 +6,7 @@ import {QuizStateComponent} from '@core/QuizStateComponent'
 import {debounce} from '@/core/utils'
 import {createformControls, validate, validateForm} from './quizCreator.form'
 import {createQuizQuestion, finishedCreateQuiz} from '@/storage/actions/create'
+import {navigate} from '../../core/utils'
 // import is from 'is_js'
 // import axios from 'axios'
 
@@ -215,6 +216,7 @@ export class QuizCreator extends QuizStateComponent {
 
     addQueizHandler() {
         this.$dispatch(finishedCreateQuiz())
+        navigate('')
     }
 
     onChange(event) {

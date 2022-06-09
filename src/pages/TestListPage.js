@@ -16,11 +16,6 @@ export class TestListPage extends Page {
 
     getRoot() {
         const $root = $.create('div', TestListContainer.className)
-        // const admin = this.store.getState().token
-
-        // if (admin) {
-        //     components.push(Navbar)
-        // }
 
         this.testListContainer = new TestListContainer($root, {
             store: this.store,

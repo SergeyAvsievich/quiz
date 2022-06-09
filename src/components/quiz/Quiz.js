@@ -1,45 +1,72 @@
 import {$} from "@core/dom"
-// import {StoreSubscriber} from "@core/redux/StoreSubscriber"
+import {QuizStateComponent} from "../../core/QuizStateComponent"
+import {fetchQuizById} from "../../storage/actions/action"
+import {AnswersList} from "../answersList/AnswersList"
+import {Navbar} from "../navbar/Navbar"
+import {Loader} from "../ui/loader/Loader"
 
-export class Quiz {
-    constructor(options) {
+export class Quiz extends QuizStateComponent {
+    constructor($root, options) {
+        super($root, {
+            name: 'Quiz',
+            listeners: ['click'],
+            subscribe: ['loading'],
+            ...options
+        })
+
         this.components = options.components || []
         this.store = options.store
         this.params = options.params
-        // this.subscriber = new StoreSubscriber(this.store)
+        this.Components = [Navbar, Loader]
+        this.components = []
+
+        this.getQuiz()
+    }
+
+    getQuiz() {
+        const quizId = this.params[1]
+        this.$dispatch(fetchQuizById(quizId))
     }
 
     getRoot() {
-        // создаем главный div с классом quiz
-        const $root = $.create('div', 'quiz')
-        // $root.classList.add('quiz')
-
-        // console.log('this.store: ', this.store)
-
         const componentOptions = {
             store: this.store,
             params: this.params
         }
 
         // пробтгаемся по компонентам, создаем для них div
-        this.components = this.components.map(Component => {
+        this.components = this.Components.map(Component => {
             const $el = $.create('div', Component.className)
             const component = new Component($el, componentOptions)
             $el.html(component.toHTML())
-            $root.append($el)
+            this.$root.append($el)
             return component
         })
 
-        return $root
+        return this.$root
     }
 
     init() {
-        // this.subscriber.subscribeComponents(this.components)
+        this.components.forEach(component => component.init())
+    }
+
+    storeChanged(changes) {
+        this.Components = this.Components.filter(Component => {
+            return Component !== Loader
+        })
+
+        this.components = this.components.filter(component => {
+            return !(component instanceof Loader)
+        })
+
+        this.$root.clear()
+        this.Components.push(AnswersList)
+        console.log('chang')
+        this.getRoot()
         this.components.forEach(component => component.init())
     }
 
     destroy(){
-        // this.subscriber.unSubscribeFromStore()
         this.components.forEach(component => component.destroy())
     }
 }

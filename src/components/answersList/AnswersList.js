@@ -7,13 +7,11 @@ import {
     shouldReturn
 } from "./answerList.functions"
 import {
-    fetchQuizById,
     finishedQuiz, nextQuestion, quizRetry
 } from "../../storage/actions/action"
-// import {db, getQuiz} from "../../firebase/firebase"
 import {QuizStateComponent} from "../../core/QuizStateComponent"
 import {$} from "../../core/dom"
-// import axios from "../../axios/axios-quiz"
+// import {Loader} from "../ui/loader/Loader"
 
 // const quizes = {
 //     // currentQuestion: 1,
@@ -48,49 +46,48 @@ export class AnswersList extends QuizStateComponent {
         super($root, {
             name: 'AnswersList',
             listeners: ['click'],
-            // subscribe: ['answerState', 'activeQuestion'], подписки
-            // на изменения состояния с другими компонентами
+            subscribe: [],
             ...options
         })
 
         this.params = options.params
+        this.$root = $root
         this.quiz = {}
-        // this.getQuiz()
     }
 
     prepare() {}
 
     get template() {
         return `
-        <div class="container d-flex justify-content-center mt-5">
-            <div class="quiz-wrapper"></div>
-        </div>    
+            <div class="container d-flex justify-content-center mt-5">
+                <div class="quiz-wrapper"></div>
+            </div> 
         `
     }
 
     toHTML() {
+        console.log('answer list toHTML')
+        this.quiz = this.store.getState().quiz
+        const quiz = this.quiz
+        console.log('quiz: ', quiz)
+
+        setTimeout(() => {
+            try {
+                renderAnswersList(
+                    quiz,
+                    this.store.getState().activeQuestion
+                )
+            } catch (e) {
+                console.log('Error: ', e)
+            }
+        }, 0)
+
         return this.template
     }
 
     init() {
+        console.log('answer list init')
         super.init()
-        console.log('init')
-        this.getQuiz()
-        setTimeout(() => {
-            this.quiz = this.store.getState().quiz
-            const quiz = this.quiz
-            console.log('quiz: ', quiz)
-            renderAnswersList(
-                quiz,
-                this.store.getState().activeQuestion
-            )
-        }, 2000)
-    }
-
-    getQuiz() {
-        const quizId = this.params[1]
-        console.log('params: ', quizId)
-        this.$dispatch(fetchQuizById(quizId))
     }
 
     selectAnswer(event) {
