@@ -37,8 +37,8 @@ export function createListItems(isAdmin) {
             <li class="nav-item"
             >
                 <a class="nav-link active"
-                    href="/#"
-                    data-type="logout"
+                    href="/#admin"
+                    data-type="admission"
                 >
                     <i class="fas fa-sign-in"></i>
                     Вход для администратора
@@ -52,6 +52,7 @@ export function createListItems(isAdmin) {
             <a class="nav-link active" 
                 aria-current="page" 
                 href="#"
+                data-type="test-list"
             >
                 <i class="far fa-list-alt"></i> Список тестов
             </a>
@@ -59,6 +60,7 @@ export function createListItems(isAdmin) {
         <li class="nav-item">
             <a class="nav-link" 
                 href="/#creator"
+                data-type="create"
             >
                 <i class="fas fa-plus-circle"></i>
                 Создать тест

@@ -82,43 +82,6 @@ export function quizSetState(answerState, results) {
     }
 }
 
-// перенести функцию с компонента answerList
-// export function quizAnswerClick(answerId) {
-//     return function(dispatch, getState) {
-//         const state = getState()
-//         const quiz = state.quiz
-//         const questions = quiz.questions
-//         // const $target = $(event.target)
-
-//         if (isRightAnswer(
-//             answerId,
-//             questions,
-//             state.activeQuestion
-//         )) {
-//             $target.addClass('success')
-//             dispatch(finishedQuiz({rightAnswer: true}))
-//         } else {
-//             $target.addClass('error')
-//             dispatch(finishedQuiz({rightAnswer: false}))
-//         }
-
-//         setTimeout(() => {
-//             dispatch(nextQuestion())
-//             if (isFinishedQuestion(state)) {
-//                 renderAnswersList(
-//                     questions,
-//                     state.activeQuestion
-//                 )
-//             } else {
-//                 renderFinishQuiz(questions, state.answerState)
-//             }
-//         }, 1000)
-//         dispatch(quizSetState())
-//     }
-// }
-
-// isQuizFineshed(state)
-
 export function nextQuestion(){
     return {
         type: QUIZ_NEXT_QUESTION,

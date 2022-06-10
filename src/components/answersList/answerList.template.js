@@ -51,7 +51,7 @@ export const renderFinishQuiz = (questions, answers) => {
                 Пройти тест заново
             </button>
             <a
-                href="/#list" 
+                href="/#" 
                 class="btn btn-success" 
                 data-return="true"
             >Перейти в список тестов</a>

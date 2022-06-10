@@ -4,6 +4,7 @@ import {fetchQuizes} from '../../storage/actions/action'
 import {TestList} from "../testList/TestList"
 import {Loader} from "../ui/loader/Loader"
 import {Navbar} from "../navbar/Navbar"
+import {resetQuiz} from "../../storage/actions/create"
 
 export class TestListContainer extends QuizStateComponent {
     static className = 'test-list'
@@ -29,6 +30,9 @@ export class TestListContainer extends QuizStateComponent {
 
     getQuizes() {
         return new Promise((r) => {
+            if (this.store.getState().quiz.length) {
+                this.$dispatch(resetQuiz())
+            }
             this.$dispatch(fetchQuizes())
             r()
         })
@@ -56,7 +60,7 @@ export class TestListContainer extends QuizStateComponent {
         return this.template
     }
 
-    storeChanged() {
+    storeChanged(changes) {
         this.Components = this.Components.filter(Component => {
             return Component !== Loader
         })

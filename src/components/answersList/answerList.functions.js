@@ -1,4 +1,3 @@
-// ! question - не из store
 export function isRightAnswer(answer, questions, activeQuestion) {
     return +answer === questions[activeQuestion - 1].rightAnswerId
 }

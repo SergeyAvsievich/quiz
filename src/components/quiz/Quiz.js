@@ -10,7 +10,7 @@ export class Quiz extends QuizStateComponent {
         super($root, {
             name: 'Quiz',
             listeners: ['click'],
-            subscribe: ['loading'],
+            subscribe: ['quiz'],
             ...options
         })
 
@@ -51,19 +51,24 @@ export class Quiz extends QuizStateComponent {
     }
 
     storeChanged(changes) {
-        this.Components = this.Components.filter(Component => {
-            return Component !== Loader
-        })
+        if (!changes) {
+            return
+        }
 
-        this.components = this.components.filter(component => {
-            return !(component instanceof Loader)
-        })
+        if (changes.quiz.length) {
+            this.Components = this.Components.filter(Component => {
+                return Component !== Loader
+            })
 
-        this.$root.clear()
-        this.Components.push(AnswersList)
-        console.log('chang')
-        this.getRoot()
-        this.components.forEach(component => component.init())
+            this.components = this.components.filter(component => {
+                return !(component instanceof Loader)
+            })
+
+            this.$root.clear()
+            this.Components.push(AnswersList)
+            this.getRoot()
+            this.components.forEach(component => component.init())
+        }
     }
 
     destroy(){

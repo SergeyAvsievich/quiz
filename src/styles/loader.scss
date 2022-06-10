@@ -32,8 +32,8 @@
             height: 0;
             margin: 8px;
             box-sizing: border-box;
-            border: 32px solid $navbar-color;
-            border-color: $navbar-color transparent $navbar-color transparent;
+            border: 32px solid #fff;
+            border-color: #fff transparent #fff transparent;
             animation: loader 1.2s infinite;
         }
     }

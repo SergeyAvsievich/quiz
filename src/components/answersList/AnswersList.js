@@ -9,9 +9,9 @@ import {
 import {
     finishedQuiz, nextQuestion, quizRetry
 } from "../../storage/actions/action"
-import {QuizStateComponent} from "../../core/QuizStateComponent"
+import {QuizComponent} from "../../core/QuizComponent"
 import {$} from "../../core/dom"
-// import {Loader} from "../ui/loader/Loader"
+import {resetQuiz} from "../../storage/actions/create"
 
 // const quizes = {
 //     // currentQuestion: 1,
@@ -39,7 +39,7 @@ import {$} from "../../core/dom"
 //     ],
 // }
 
-export class AnswersList extends QuizStateComponent {
+export class AnswersList extends QuizComponent {
     static className = 'quiz__answers-list'
 
     constructor($root, options) {
@@ -66,12 +66,10 @@ export class AnswersList extends QuizStateComponent {
     }
 
     toHTML() {
-        console.log('answer list toHTML')
-        this.quiz = this.store.getState().quiz
-        const quiz = this.quiz
-        console.log('quiz: ', quiz)
-
         setTimeout(() => {
+            this.quiz = this.store.getState().quiz
+            const quiz = this.quiz
+            console.log('quiz: ', quiz)
             try {
                 renderAnswersList(
                     quiz,
@@ -136,6 +134,7 @@ export class AnswersList extends QuizStateComponent {
         }
 
         if (shouldReturn(event)) {
+            this.$dispatch(resetQuiz())
             this.$dispatch(quizRetry())
         }
     }
