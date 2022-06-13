@@ -5,11 +5,6 @@
 
 nav {
     height: $navbar-height;
-    // background: #ff8f00; 
-    // background-color: #fdd835;
-    // background: linear-gradient(90deg, #1e53e5 90%, #1976d2);
-    // background: linear-gradient(70deg, 	rgb(49,174,175), rgb(40,82,177));
-    // background: linear-gradient(45deg,  #FC2C78 45%, #6D4077 100%);
     font-size: 20px;
     border-bottom: solid 1.5px rgba(255, 255, 255, 0.4);
 
@@ -59,6 +54,7 @@ nav {
 
         a.nav-link {
             color: black !important;
+
             &:hover {
                 color: #666 !important;
             }
