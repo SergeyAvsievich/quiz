@@ -1,10 +1,9 @@
-// ! question - не из store
 export function isRightAnswer(answer, questions, activeQuestion) {
     return +answer === questions[activeQuestion - 1].rightAnswerId
 }
 
-export function isFinishedQuestion(questions, activeQuestion) {
-    return activeQuestion === questions.length
+export function isFinishedQuestion(quiz, activeQuestion) {
+    return activeQuestion === quiz.length
 }
 
 export function shouldAnswer(event) {

@@ -4,7 +4,6 @@ import {
 } from "../components/testListContainer/TestListContainer"
 import {$} from '@core/dom'
 import {StoreSubscriber} from "@core/redux/StoreSubscriber"
-// import {Navbar} from '@/components/navbar/Navbar'
 
 export class TestListPage extends Page {
     constructor(params, store){
@@ -16,11 +15,6 @@ export class TestListPage extends Page {
 
     getRoot() {
         const $root = $.create('div', TestListContainer.className)
-        // const admin = this.store.getState().token
-
-        // if (admin) {
-        //     components.push(Navbar)
-        // }
 
         this.testListContainer = new TestListContainer($root, {
             store: this.store,

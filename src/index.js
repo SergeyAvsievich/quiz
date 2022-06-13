@@ -9,31 +9,26 @@ import {applyMiddleware} from '@core/redux/applyMiddleware'
 import {thunk} from '@core/redux/thunk'
 import {TestListPage} from './pages/TestListPage'
 import {ActiveRoute} from './core/routing/ActiveRouter'
+import 'mdb-ui-kit/js/mdb.min.js'
 import './styles/style.scss'
 
-// const routes = [
-//     {path: '', element: AuthPage},
-//     {path: '', element: QuizPage},
-// ]
-
-// проблема в передаче store, создаетьсч в компоненте Quiz
-
 const store = createStore(rootReducer, applyMiddleware(thunk))
-
-store.subscribe(state => {
-    // console.log('App State: ', state)
-
-    storage('quiz-state', state)
-})
 
 const defaultRout = ''
 const id = ActiveRoute.params.slice(1)
 
-console.log('INDEX: ', `quiz/${id}`)
-
-new Router('#app', {
+const routes = {
     [defaultRout]: TestListPage,
     [`quiz/${id}`]: QuizPage,
     admin: AuthPage,
     creator: QuizCreatorPage,
-}, store)
+}
+
+store.subscribe(state => {
+    if (process.env.NODE_ENV === 'development') {
+       window['redux'] = state
+    }
+    storage('quiz-state', state)
+})
+
+new Router('#app', routes, store)

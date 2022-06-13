@@ -1,18 +1,23 @@
 import {$} from '@core/dom'
-import {Button} from '../ui/button/Button'
-import {Input} from '../ui/input/Input'
-import {Select} from '../ui/select/Select'
 import {QuizStateComponent} from '@core/QuizStateComponent'
 import {debounce} from '@/core/utils'
 import {createformControls, validate, validateForm} from './quizCreator.form'
 import {createQuizQuestion, finishedCreateQuiz} from '@/storage/actions/create'
-// import is from 'is_js'
-// import axios from 'axios'
+import {navigate} from '../../core/utils'
+import {initialState} from './quizCreator.initialState'
+import {Navbar} from "../navbar/Navbar";
+import {
+    createInputs,
+    createTemplateFooter,
+    createTemplateBody,
+    createTemplateHeader,
+    createSelect
+} from './quizCreator.template'
 
 export class QuizCreator extends QuizStateComponent {
     constructor($root, options, store) {
         super($root, {
-            name: 'Form',
+            name: 'quiz-creator',
             listeners: ['input', 'click', 'change'],
             ...options
         })
@@ -23,14 +28,8 @@ export class QuizCreator extends QuizStateComponent {
     }
 
     prepare() {
-        // будет ли данные получать через debounce
         this.onInput = debounce(this.onInput, 300)
-
-        this.initState({
-            isFormValid: false,
-            rightAnswerId: 1,
-            formControls: createformControls()
-        })
+        this.initState(initialState)
     }
 
     get template() {
@@ -38,40 +37,29 @@ export class QuizCreator extends QuizStateComponent {
     }
 
     createTemplaeteFormQuizCreator() {
-        const $input = $.create('div')
-        const $button = $.create('button')
-        const $select = $.create('select')
+        this.inputs = createInputs(this.state)
+        this.select = createSelect(this.state)
 
-        this.inputs = this.renderInputs($input)
+        const $container = $.create('div', 'quiz-creator__form')
+        const $form = $.create('div', 'form')
 
-        const $formHeader = $.create('div', 'form__header')
-        $formHeader.html(`
-            <div class="form__header">
-                <h1>Создание теста</h1>
-            </div>
-        `)
-
-        const $formBody = $.create('div', 'form__body')
-        $formBody.html(`
-            ${this.inputs.map(input => {
-            return input.toHTML()
-        }).join('')}
-            ${this.renderSelect($select)}
-        `)
-
-        const $formFooter = $.create('div', 'form__footer')
-        $formFooter.html(`
-            <div class="form__footer">
-                ${this.renderButtons($button)}
-            </div>
-            `
-        )
-
-        this.$root.append($formHeader)
-        this.$root.append($formBody)
-        this.$root.append($formFooter)
+        this.$root.append(this.createNavbar())
+        $form.append(createTemplateHeader())
+        $form.append(createTemplateBody(this.inputs, this.select))
+        $form.append(createTemplateFooter(this.state, this.store))
+        $container.append($form)
+        this.$root.append($container)
 
         return this.$root
+    }
+
+    createNavbar() {
+        const $el = $.create('div', Navbar.className)
+        this.navbar = new Navbar($el, {
+            store: this.store
+        })
+        $el.html(this.navbar.toHTML())
+        return $el
     }
 
     getRoot() {
@@ -79,14 +67,12 @@ export class QuizCreator extends QuizStateComponent {
     }
 
     init() {
-        // this.subscriber.subscribeComponents(this.components)
         super.init()
-        this.inputs.forEach(input => input.init())
+        this.components = [this.navbar, ...this.inputs]
         this.components.forEach(component => component.init())
     }
 
     destroy() {
-        // this.subscriber.unSubscribeFromStore()
         this.components.forEach(component => component.destroy())
     }
 
@@ -104,58 +90,6 @@ export class QuizCreator extends QuizStateComponent {
         } else if ($target.data.type === 'success') {
             this.addQueizHandler()
         }
-    }
-
-    renderInputs($input) {
-        return Object.keys(this.state.formControls)
-            .map((controlName, index) => {
-                const control = this.state.formControls[controlName]
-
-                return new Input($input, {
-                    key: controlName + index,
-                    name: controlName,
-                    type: control.type,
-                    value: control.value,
-                    valid: control.valid,
-                    touched: control.touched,
-                    label: control.label,
-                    shouldValidate: !!control.validation,
-                    errorMessage: control.errorMessage
-                }
-            )
-        })
-    }
-
-    renderButtons($button) {
-        return [
-            new Button($button, {
-                type: 'primary',
-                text: ' Добавить вопрос',
-                disabled: !this.state.isFormValid
-            }),
-            new Button($button, {
-                type: 'success',
-                text: 'Создать тест',
-                disabled: this.store.getState().quiz.length === 0
-            }),
-        ].map(button => button.toHTML()).join('')
-    }
-
-    renderSelect($select) {
-        const options = [
-            {text: 1, value: 1},
-            {text: 2, value: 2},
-            {text: 3, value: 3},
-            {text: 4, value: 4}
-        ]
-
-        const select = new Select($select, {
-            label: 'Выбирите правельный ответ',
-            value: this.state.rightAnswerId,
-            optionsParams: options,
-            // onChange: this.selectChangeHandler
-        }).toHTML()
-        return select
     }
 
     inputHandler(event) {
@@ -177,10 +111,6 @@ export class QuizCreator extends QuizStateComponent {
         const input = document.querySelector(`[data-input='${controlName}']`)
         input.focus()
         input.selectionStart = input.value.length
-    }
-
-    submitHandler(event) {
-        event.preventDefoult()
     }
 
     addQuestionHandler() {
@@ -215,15 +145,17 @@ export class QuizCreator extends QuizStateComponent {
 
     addQueizHandler() {
         this.$dispatch(finishedCreateQuiz())
+        setTimeout(() => navigate(''), 1000)
     }
 
     onChange(event) {
         const $target = $(event.target)
-
-        if ($target.data.select) {
+        const dataSelect = $target.data.select
+        if (dataSelect) {
             this.setState({
                 rightAnswerId: +event.target.value
             })
+            this.$root.findOne(`[data-select]`).value = +event.target.value
         }
     }
 }

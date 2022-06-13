@@ -12,7 +12,7 @@
     &__form {
         width: 600px;
         margin-top: -100px;
-        background: #fff;
+        background: $white-color;
         padding: 30px;
         border-radius: 5px;
 
@@ -30,5 +30,11 @@
             outline: none;
             border: 2px solid #1266f1;
         }
+    }
+}
+
+@media (max-width: 620px) {
+    .auth__form {
+        width: 90%;
     }
 }

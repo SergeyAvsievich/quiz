@@ -16,6 +16,7 @@ import {
 
 export function rootReducer(state = initialState, action){
     switch (action.type) {
+        // testList
         case FETCH_QUIEZES_START:
             return {
                 ...state,
@@ -33,6 +34,8 @@ export function rootReducer(state = initialState, action){
                 loading: false,
                 error: action.error
             }
+
+        // quiz
         case FETCH_QUIZ_SUCCESS:
             return {
                 ...state,
@@ -64,6 +67,8 @@ export function rootReducer(state = initialState, action){
                 answerState: [...state.answerState, action.answer],
                 isFinished: true
             }
+
+        // auth
         case AUTH_SUCCESS:
             return {
                 ...state, token: action.token
@@ -72,6 +77,8 @@ export function rootReducer(state = initialState, action){
             return {
                 ...state, token: null
             }
+
+        // create
         case CREATE_QUIZ_QUESTION:
             return {
                 ...state,
@@ -80,7 +87,7 @@ export function rootReducer(state = initialState, action){
         case RESET_CREATE_QUIZ: {
             return {
                 ...state,
-                quiz: []
+                quiz: [],
             }
         }
         default:
