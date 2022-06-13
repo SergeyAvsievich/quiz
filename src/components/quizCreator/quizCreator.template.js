@@ -6,25 +6,23 @@ import {Button} from '../ui/button/Button'
 export function createTemplateHeader() {
     const $formHeader = $.create('div', 'form__header')
     $formHeader.html(`
-        <div class="form__header">
-            <h1>Создание теста</h1>
-        </div>
+        <h1>Создание теста</h1>
     `)
     return $formHeader
 }
 
-export function createTemplateBody(state, inputs) {
+export function createTemplateBody(inputs, select) {
     const $formBody = $.create('div', 'form__body')
     $formBody.html(`
         ${inputs.map(input => {
         return input.toHTML()
     }).join('')}
-        ${createSelect(state)}
+        ${select.toHTML()}
     `)
     return $formBody
 }
 
-function createSelect(state) {
+export function createSelect(state) {
     const $select = $.create('select')
     const options = [
         {text: 1, value: 1},
@@ -37,8 +35,7 @@ function createSelect(state) {
         label: 'Выбирите правельный ответ',
         value: state.rightAnswerId,
         optionsParams: options,
-        // onChange: this.selectChangeHandler
-    }).toHTML()
+    })
 
     return select
 }
@@ -61,8 +58,8 @@ export function createInputs(state) {
                 shouldValidate: !!control.validation,
                 errorMessage: control.errorMessage
             }
-        )
-    })
+            )
+        })
 }
 
 export function createTemplateFooter(state, store) {

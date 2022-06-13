@@ -40,7 +40,6 @@ export function autoLogout(time) {
 }
 
 export function logout() {
-    console.log('dispatch logout')
     return {
         type: AUTH_LOGOUT,
     }

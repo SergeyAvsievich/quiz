@@ -59,7 +59,6 @@ export function fetchQuizById(quizId) {
         try {
             const response = await axios.get(`/quizes/${quizId}.json`)
             const quiz = response.data
-            console.log('action: ', quiz)
             dispatch(fetchQuizSuccess(quiz))
         } catch (e) {
             console.log(e)

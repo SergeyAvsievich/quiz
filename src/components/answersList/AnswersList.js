@@ -8,7 +8,7 @@ import {
 } from "./answerList.functions"
 import {
     finishedQuiz, nextQuestion, quizRetry
-} from "../../storage/actions/action"
+} from "../../storage/actions/quiz"
 import {QuizComponent} from "../../core/QuizComponent"
 import {$} from "../../core/dom"
 import {resetQuiz} from "../../storage/actions/create"
@@ -59,7 +59,7 @@ export class AnswersList extends QuizComponent {
 
     get template() {
         return `
-            <div class="container d-flex justify-content-center mt-5">
+            <div class="container d-flex justify-content-center">
                 <div class="quiz-wrapper"></div>
             </div> 
         `
@@ -69,7 +69,6 @@ export class AnswersList extends QuizComponent {
         setTimeout(() => {
             this.quiz = this.store.getState().quiz
             const quiz = this.quiz
-            console.log('quiz: ', quiz)
             try {
                 renderAnswersList(
                     quiz,
@@ -84,7 +83,6 @@ export class AnswersList extends QuizComponent {
     }
 
     init() {
-        console.log('answer list init')
         super.init()
     }
 
@@ -103,14 +101,14 @@ export class AnswersList extends QuizComponent {
         }
 
         setTimeout(() => {
-            this.$dispatch(nextQuestion())
             const activeQuestion = this.store.getState().activeQuestion
             const answerState = this.store.getState().answerState
 
             if (isFinishedQuestion(quiz, activeQuestion)) {
-                renderAnswersList(quiz, activeQuestion)
-            } else {
                 renderFinishQuiz(quiz, answerState)
+            } else {
+                this.$dispatch(nextQuestion())
+                renderAnswersList(quiz, activeQuestion + 1)
             }
         }, 1000)
     }

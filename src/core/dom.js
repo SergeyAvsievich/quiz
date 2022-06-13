@@ -71,11 +71,11 @@ class Dom {
     }
 
     findAll(selector){
-        return this.$el.document.querySelectorAll(selector)
+        return this.$el.querySelectorAll(selector)
     }
 
     findOne(selector){
-        return this.$el.document.querySelector(selector)
+        return this.$el.querySelector(selector)
     }
 
     addClass(className){

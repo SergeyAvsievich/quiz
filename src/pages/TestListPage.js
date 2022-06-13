@@ -4,7 +4,6 @@ import {
 } from "../components/testListContainer/TestListContainer"
 import {$} from '@core/dom'
 import {StoreSubscriber} from "@core/redux/StoreSubscriber"
-// import {Navbar} from '@/components/navbar/Navbar'
 
 export class TestListPage extends Page {
     constructor(params, store){

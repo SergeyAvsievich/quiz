@@ -12,7 +12,6 @@ export function createQuizQuestion(quizItem) {
 }
 
 export function resetQuiz() {
-    console.log('dispatch reset')
     return {
         type: RESET_CREATE_QUIZ
     }

@@ -1,6 +1,7 @@
 import {$} from "@core/dom"
 import {QuizStateComponent} from "../../core/QuizStateComponent"
-import {fetchQuizById} from "../../storage/actions/action"
+import {preventDefault} from "../../core/utils"
+import {fetchQuizById} from "../../storage/actions/quiz"
 import {AnswersList} from "../answersList/AnswersList"
 import {Navbar} from "../navbar/Navbar"
 import {Loader} from "../ui/loader/Loader"
@@ -34,7 +35,6 @@ export class Quiz extends QuizStateComponent {
             params: this.params
         }
 
-        // пробтгаемся по компонентам, создаем для них div
         this.components = this.Components.map(Component => {
             const $el = $.create('div', Component.className)
             const component = new Component($el, componentOptions)
@@ -47,6 +47,9 @@ export class Quiz extends QuizStateComponent {
     }
 
     init() {
+        if (process.env.NODE_ENV === 'production') {
+            document.addEventListener('contextmenu', preventDefault)
+        }
         this.components.forEach(component => component.init())
     }
 
@@ -73,5 +76,6 @@ export class Quiz extends QuizStateComponent {
 
     destroy(){
         this.components.forEach(component => component.destroy())
+        document.removeEventListener('contextmenu', preventDefault)
     }
 }

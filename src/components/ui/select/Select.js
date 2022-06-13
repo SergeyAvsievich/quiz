@@ -8,16 +8,18 @@ export class Select extends QuizComponent {
             ...options
         })
 
+        this.label = options.label
+        this.value = options.value
         this.optionsParams = options.optionsParams
     }
 
     prepare() {}
 
     get template() {
-        const htmlfor = `${this.label}-${Math.random()}`
+        const htmlfor = `${Date.now()}-${Math.random()}`
         return `
             <div class="sselect">
-                <label for="${htmlfor}"></label>
+                <label for="${htmlfor}">${this.label}</label>
                 <select 
                     id="${htmlfor}"
                     value="${this.value}"
@@ -30,7 +32,6 @@ export class Select extends QuizComponent {
     }
 
     createTemplateOptions() {
-        console.log('options: ', this.optionsParams)
         return this.optionsParams.map((option, index) => {
             return `
                 <option

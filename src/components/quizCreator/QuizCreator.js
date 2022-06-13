@@ -5,18 +5,19 @@ import {createformControls, validate, validateForm} from './quizCreator.form'
 import {createQuizQuestion, finishedCreateQuiz} from '@/storage/actions/create'
 import {navigate} from '../../core/utils'
 import {initialState} from './quizCreator.initialState'
-// import {Navbar} from "../navbar/Navbar";
+import {Navbar} from "../navbar/Navbar";
 import {
     createInputs,
     createTemplateFooter,
     createTemplateBody,
-    createTemplateHeader
+    createTemplateHeader,
+    createSelect
 } from './quizCreator.template'
 
 export class QuizCreator extends QuizStateComponent {
     constructor($root, options, store) {
         super($root, {
-            name: 'Form',
+            name: 'quiz-creator',
             listeners: ['input', 'click', 'change'],
             ...options
         })
@@ -37,23 +38,28 @@ export class QuizCreator extends QuizStateComponent {
 
     createTemplaeteFormQuizCreator() {
         this.inputs = createInputs(this.state)
-        // const $form = $.create('div', 'quiz-creator__form')
-        // this.$root.append(this.createNavbar())
-        this.$root.append(createTemplateHeader())
-        this.$root.append(createTemplateBody(this.state, this.inputs))
-        this.$root.append(createTemplateFooter(this.state, this.store))
-        // this.$root.append($form)
+        this.select = createSelect(this.state)
+
+        const $container = $.create('div', 'quiz-creator__form')
+        const $form = $.create('div', 'form')
+
+        this.$root.append(this.createNavbar())
+        $form.append(createTemplateHeader())
+        $form.append(createTemplateBody(this.inputs, this.select))
+        $form.append(createTemplateFooter(this.state, this.store))
+        $container.append($form)
+        this.$root.append($container)
 
         return this.$root
     }
 
     createNavbar() {
-        // const $el = $.create('div', Navbar.className)
-        // this.navbar = new Navbar($el, {
-        // store: this.store
-        // })
-        // $el.html(this.navbar.toHTML())
-        // return $el
+        const $el = $.create('div', Navbar.className)
+        this.navbar = new Navbar($el, {
+            store: this.store
+        })
+        $el.html(this.navbar.toHTML())
+        return $el
     }
 
     getRoot() {
@@ -61,14 +67,12 @@ export class QuizCreator extends QuizStateComponent {
     }
 
     init() {
-        // this.subscriber.subscribeComponents(this.components)
         super.init()
         this.components = [this.navbar, ...this.inputs]
         this.components.forEach(component => component.init())
     }
 
     destroy() {
-        // this.subscriber.unSubscribeFromStore()
         this.components.forEach(component => component.destroy())
     }
 
@@ -109,10 +113,6 @@ export class QuizCreator extends QuizStateComponent {
         input.selectionStart = input.value.length
     }
 
-    submitHandler(event) {
-        event.preventDefoult()
-    }
-
     addQuestionHandler() {
         const {
             question,
@@ -145,16 +145,17 @@ export class QuizCreator extends QuizStateComponent {
 
     addQueizHandler() {
         this.$dispatch(finishedCreateQuiz())
-        navigate('')
+        setTimeout(() => navigate(''), 1000)
     }
 
     onChange(event) {
         const $target = $(event.target)
-
-        if ($target.data.select) {
+        const dataSelect = $target.data.select
+        if (dataSelect) {
             this.setState({
                 rightAnswerId: +event.target.value
             })
+            this.$root.findOne(`[data-select]`).value = +event.target.value
         }
     }
 }

@@ -1,6 +1,6 @@
 import {$} from "@core/dom"
 import {QuizStateComponent} from '@core/QuizStateComponent'
-import {fetchQuizes} from '../../storage/actions/action'
+import {fetchQuizes} from '../../storage/actions/quiz'
 import {TestList} from "../testList/TestList"
 import {Loader} from "../ui/loader/Loader"
 import {Navbar} from "../navbar/Navbar"
@@ -24,7 +24,6 @@ export class TestListContainer extends QuizStateComponent {
     }
 
     get template() {
-        // this.$root.append(this.loader)
         return this.createTemplaeteTestList()
     }
 
@@ -44,7 +43,6 @@ export class TestListContainer extends QuizStateComponent {
             params: this.params
         }
 
-        // пробтгаемся по компонентам, создаем для них div
         this.components = this.Components.map(Component => {
             const $el = $.create('div', Component.className)
             const component = new Component($el, componentOptions)

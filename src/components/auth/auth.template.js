@@ -50,6 +50,11 @@ export function createFormFooterTemplate(state) {
     $formFooter.html(`
         <div class="form__footer">
             ${renderButtons($button, state)}
+            <br/>
+            <br/>
+            <span>Можете войти по тестовыми данными.</span><br/>
+            <span>email: test@gmail.com</span><br/>
+            <span>Пароль: test1234</span>
         </div>   
         `
     )

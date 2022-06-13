@@ -27,14 +27,14 @@
     }
 
     a {
-        color: #fff;
+        color: $white-color;
 
         &:hover {
-            color: #ddd;
+            color: #ccc;
         }
     }
 
     h1{
-        color: #fff;
+        color: $white-color;
     }
 }

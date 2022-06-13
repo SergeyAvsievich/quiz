@@ -49,14 +49,12 @@ export class Auth extends QuizStateComponent {
     }
 
     init() {
-        // this.subscriber.subscribeComponents(this.components)
         super.init()
         this.inputs.forEach(input => input.init())
         this.components.forEach(component => component.init())
     }
 
     destroy(){
-        // this.subscriber.unSubscribeFromStore()
         this.components.forEach(component => component.destroy())
     }
 
@@ -85,9 +83,9 @@ export class Auth extends QuizStateComponent {
             if (admin) {
                 window.location.href = '/#'
             } else {
-                window.location.href = '/#error'
+                throw new Error('Пользоватеь не зарегистрирован')
             }
-        }, 1000)
+        }, 1500)
     }
 
     registerHandler() {
@@ -95,6 +93,16 @@ export class Auth extends QuizStateComponent {
         const password = this.state.formControls.password.value
 
         this.$dispatch(auth(email, password, false))
+
+        alert('Пользователь успешно зарегестрирован.')
+
+        const formControls = this.state.formControls
+
+        Object.keys(formControls).map(key => {
+            formControls[key].value = ''
+        })
+
+        this.setState({formControls})
     }
 
     onChangeHandler(event) {

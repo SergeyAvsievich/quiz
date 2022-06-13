@@ -1,6 +1,6 @@
 export function createTemplateNavbar(isAdmin) {
     return `
-    <nav class="navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <div>
                 <h4>
@@ -34,8 +34,7 @@ export function createTemplateNavbar(isAdmin) {
 export function createListItems(isAdmin) {
     if (!isAdmin) {
         return `
-            <li class="nav-item"
-            >
+            <li class="nav-item">
                 <a class="nav-link active"
                     href="/#admin"
                     data-type="admission"
@@ -49,9 +48,8 @@ export function createListItems(isAdmin) {
 
     return `
         <li class="nav-item">
-            <a class="nav-link active" 
-                aria-current="page" 
-                href="#"
+            <a class="nav-link" 
+                href="/#"
                 data-type="test-list"
             >
                 <i class="far fa-list-alt"></i> Список тестов

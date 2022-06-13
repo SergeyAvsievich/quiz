@@ -18,15 +18,12 @@ export class QuizCreatorPage extends Page {
     }
 
     getRoot() {
-        const $container = $.create('div', 'quiz-creator')
+        const $root = $.create('div', 'quiz-creator')
 
-        const $root = $.create('div', 'quiz-creator__form')
         this.quizCreator = new QuizCreator($root, {
         }, this.store)
 
-        $container.append(this.quizCreator.getRoot())
-
-        return $container
+        return this.quizCreator.getRoot()
     }
 
     afterRender() {

@@ -27,29 +27,13 @@ export class Navbar extends QuizStateComponent {
 
     onClick(event) {
         const $target = $(event.target)
-        // switch ($target.data.type) {
-        //     case 'logout':
-        //         return this.logoutHandler()
-        //     case 'create':
-        //     case 'test-list':
-        //     case 'admission':
-        //         this.$dispatch(resetQuiz())
-        // }
-
-        if ($target.data.type === 'logout') {
-            this.logoutHandler()
-        }
-
-        if ($target.data.type === 'create') {
-            this.$dispatch(resetQuiz())
-        }
-
-        if ($target.data.type === 'test-list') {
-            this.$dispatch(resetQuiz())
-        }
-
-        if ($target.data.type === 'admission') {
-            this.$dispatch(resetQuiz())
+        switch ($target.data.type) {
+            case 'logout':
+                return this.logoutHandler()
+            case 'test-list':
+            case 'create':
+            case 'admission':
+                this.$dispatch(resetQuiz())
         }
     }
 

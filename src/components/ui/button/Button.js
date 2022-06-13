@@ -6,7 +6,7 @@ export class Button extends QuizComponent {
     constructor($root, options) {
         super($root, {
             name: 'Button',
-            listeners: ['click'],
+            listeners: [],
             ...options
         })
 
@@ -26,12 +26,6 @@ export class Button extends QuizComponent {
         this.$root.attr('data-type', this.type)
         this.$root.$el.disabled = this.disabled
         return this.$root.$el.outerHTML
-        // return `
-        //     <button
-        //         class="button ${this.type}"
-        //         ${disabled}
-        //     >${this.text}</button>
-        // `
     }
 
     toHTML() {
@@ -40,9 +34,5 @@ export class Button extends QuizComponent {
 
     init() {
         super.init()
-    }
-
-    onClick(event) {
-        console.log('Button: ', event)
     }
 }

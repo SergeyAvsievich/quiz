@@ -9,6 +9,7 @@ import {applyMiddleware} from '@core/redux/applyMiddleware'
 import {thunk} from '@core/redux/thunk'
 import {TestListPage} from './pages/TestListPage'
 import {ActiveRoute} from './core/routing/ActiveRouter'
+import 'mdb-ui-kit/js/mdb.min.js'
 import './styles/style.scss'
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
@@ -24,8 +25,10 @@ const routes = {
 }
 
 store.subscribe(state => {
+    if (process.env.NODE_ENV === 'development') {
+       window['redux'] = state
+    }
     storage('quiz-state', state)
-    console.log('App State: ', state)
 })
 
 new Router('#app', routes, store)
