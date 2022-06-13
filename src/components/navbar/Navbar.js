@@ -34,12 +34,14 @@ export class Navbar extends QuizStateComponent {
             case 'create':
             case 'admission':
                 this.$dispatch(resetQuiz())
+                this.$root.findOne('#navbar-collapse').removeClass('in')
         }
     }
 
     logoutHandler() {
         this.$dispatch(logout())
         this.$dispatch(resetQuiz())
+        this.$root.findOne('#navbar-collapse').removeClass('in')
     }
 
     init() {

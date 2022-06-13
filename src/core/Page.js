@@ -1,3 +1,5 @@
+import {preventDefault} from "./utils"
+
 export class Page {
     constructor(params) {
         this.params = params
@@ -7,7 +9,13 @@ export class Page {
         throw new Error('Method "getRoot" not implemented')
     }
 
-    afterRender(){}
+    afterRender(){
+        if (process.env.NODE_ENV === 'production') {
+            document.addEventListener('contextmenu', preventDefault)
+        }
+    }
 
-    destroy(){}
+    destroy(){
+        document.removeEventListener('contextmenu', preventDefault)
+    }
 }
