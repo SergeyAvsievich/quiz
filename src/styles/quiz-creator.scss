@@ -4,20 +4,23 @@
 .quiz-creator {
     width: 100vw;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #888;
-
-    h1 {
-        font-size: 30px;
-    }
 
     &__form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    & .form {
+        margin-top: 50px;
         width: 800px;
-        background: #fff;
+        background: $white-color;
         padding: 30px;
         border-radius: 5px;
+
+        h1 {
+            font-size: 30px;
+        }
 
         input {
             width: 100%;
@@ -42,6 +45,18 @@
             background: #fafafa;
             border-radius: 5px;
             padding: 5px;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .quiz-creator__form .form {
+        margin-top: 15px;
+        padding: 10px;
+        width: 90%;
+        h1 {
+            font-size: 20px;
+            text-align: center;
         }
     }
 }

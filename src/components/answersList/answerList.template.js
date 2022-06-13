@@ -1,19 +1,14 @@
 export function renderAnswersList(questions, activeQuestion) {
-    // представление отделить
-    // желательно разбить эту функцию
-
-    console.log('renderAnswerList')
-
     const form = document.querySelector('.quiz-wrapper')
 
     form.innerHTML = `
         <div>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between question-title">
                 <h3>
                     ${questions[activeQuestion - 1].question}
                 </h3>
                 <small>
-                    Вопрос 1 из ${questions.length}
+                    Вопрос ${activeQuestion} из ${questions.length}
                 </small>
                 </div>
                     <ul>
@@ -32,7 +27,6 @@ export function renderAnswersList(questions, activeQuestion) {
 
 // думаю, лучше будет вынести создания списка ответов в один компонент
 export const renderFinishQuiz = (questions, answers) => {
-    console.log('answers: ', answers)
     const form = document.querySelector('.quiz-wrapper')
 
     form.innerHTML = `
@@ -51,7 +45,7 @@ export const renderFinishQuiz = (questions, answers) => {
                 Пройти тест заново
             </button>
             <a
-                href="/#list" 
+                href="/#" 
                 class="btn btn-success" 
                 data-return="true"
             >Перейти в список тестов</a>

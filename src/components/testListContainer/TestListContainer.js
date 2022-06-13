@@ -1,8 +1,10 @@
 import {$} from "@core/dom"
 import {QuizStateComponent} from '@core/QuizStateComponent'
-import {fetchQuizes} from '../../storage/actions/action'
+import {fetchQuizes} from '../../storage/actions/quiz'
 import {TestList} from "../testList/TestList"
 import {Loader} from "../ui/loader/Loader"
+import {Navbar} from "../navbar/Navbar"
+import {resetQuiz} from "../../storage/actions/create"
 
 export class TestListContainer extends QuizStateComponent {
     static className = 'test-list'
@@ -14,7 +16,7 @@ export class TestListContainer extends QuizStateComponent {
             ...options
         })
 
-        this.Components = [Loader]
+        this.Components = [Navbar, Loader]
         this.components = []
         this.store = options.store
         this.params = options.params
@@ -22,12 +24,14 @@ export class TestListContainer extends QuizStateComponent {
     }
 
     get template() {
-        // this.$root.append(this.loader)
         return this.createTemplaeteTestList()
     }
 
     getQuizes() {
         return new Promise((r) => {
+            if (this.store.getState().quiz.length) {
+                this.$dispatch(resetQuiz())
+            }
             this.$dispatch(fetchQuizes())
             r()
         })
@@ -39,7 +43,6 @@ export class TestListContainer extends QuizStateComponent {
             params: this.params
         }
 
-        // пробтгаемся по компонентам, создаем для них div
         this.components = this.Components.map(Component => {
             const $el = $.create('div', Component.className)
             const component = new Component($el, componentOptions)
@@ -55,7 +58,7 @@ export class TestListContainer extends QuizStateComponent {
         return this.template
     }
 
-    storeChanged() {
+    storeChanged(changes) {
         this.Components = this.Components.filter(Component => {
             return Component !== Loader
         })
@@ -67,6 +70,7 @@ export class TestListContainer extends QuizStateComponent {
         this.$root.clear()
         this.Components.push(TestList)
         this.getRoot()
+        this.components.forEach(component => component.init())
     }
 
     init() {

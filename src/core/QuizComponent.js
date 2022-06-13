@@ -9,12 +9,11 @@ export class QuizComponent extends DomListener{
         this.name = options.name || ''
         this.subscribe = options.subscribe || []
         this.store = options.store
-        this.unsubscribers = []
 
         this.prepare()
     }
 
-    // hook до срабатывает до init
+    // hook срабатывает до init
     prepare(){}
 
     toHTML(){
@@ -38,6 +37,6 @@ export class QuizComponent extends DomListener{
 
     destroy(){
         this.removeDOMListeners()
-        // this.onSubscribers.forEach(unsub => unsub())
+        this.subscribe.forEach(unsub => unsub())
     }
 }

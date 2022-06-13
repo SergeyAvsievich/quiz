@@ -32,7 +32,6 @@ export class Loader extends QuizComponent {
     }
 
     destroy() {
-        console.log('loader destroy')
         super.destroy()
     }
 }

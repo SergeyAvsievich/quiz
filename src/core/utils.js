@@ -8,7 +8,6 @@ export function capitalize(string){
 
 export function storage(key, data) {
     if (!data) {
-        console.log('Нет данных!!!')
         return JSON.parse(localStorage.getItem(key))
     }
 
@@ -34,4 +33,12 @@ export function debounce(fn, wait) {
         clearTimeout(timeout)
         timeout = setTimeout(later, wait)
     }
+}
+
+export function navigate(way) {
+    return window.location.href = `/#${way}`
+}
+
+export function preventDefault(event) {
+    event.preventDefault()
 }

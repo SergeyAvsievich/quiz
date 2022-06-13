@@ -1,23 +1,19 @@
 import {Page} from "@core/Page";
 import {Quiz} from '@/components/quiz/Quiz'
-import {Navbar} from '@/components/navbar/Navbar'
-import {AnswersList} from '@/components/answersList/AnswersList'
-// import {storage} from '@core/utils'
-// import {createStore} from '@core/redux/createStore'
-// import {rootReducer} from '@/storage/reducers/rootReducer'
+import {StoreSubscriber} from "@core/redux/StoreSubscriber"
+import {$} from "@core/dom"
 
 export class QuizPage extends Page {
     constructor(params, store){
         super(params)
         this.params = params
         this.store = store
+        this.subscriber = new StoreSubscriber(this.store)
     }
 
     getRoot() {
-        // создаем инстанс класса куиз, который рэндэрит в
-        // нужном порядке компоненты
-        this.quiz = new Quiz({
-            components: [Navbar, AnswersList],
+        const $quiz = $.create('div', 'quiz')
+        this.quiz = new Quiz($quiz, {
             store: this.store,
             params: this.params
         })
@@ -27,9 +23,11 @@ export class QuizPage extends Page {
 
     afterRender() {
         this.quiz.init()
+        this.subscriber.subscribeComponents([this.quiz])
     }
 
     destroy() {
+        this.subscriber.unSubscribeFromStore()
         this.quiz.destroy()
     }
 }

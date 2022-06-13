@@ -12,14 +12,56 @@ nav {
     // background: linear-gradient(45deg,  #FC2C78 45%, #6D4077 100%);
     font-size: 20px;
     border-bottom: solid 1.5px rgba(255, 255, 255, 0.4);
+
     .container {
         display: flex;
         justify-content: space-between;
         height: 100%;
         align-items: center;
-        h2{
-            color: #fff;
-            font-size: 30px;
+
+        h4 {
+            color: $white-color;
+            font-size: 25px;
+        }
+
+        a.nav-link {
+            color: $white-color;
+        }
+
+        a:hover {
+            font-size: 23px;
+            color: $white-color  !important;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar-toggler {
+        position: absolute;
+        top: 15%;
+        right: 5%;
+        z-index: 15;
+    }
+
+    .navbar-collapse {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 50px 0;
+        width: 100vw;
+        height: 100vh;
+        text-align: center;
+        z-index: 10;
+        background: $white-color;
+        transition: all 50ms ease-in-out;
+
+        a.nav-link {
+            color: black !important;
+            &:hover {
+                color: #666 !important;
+            }
         }
     }
 }

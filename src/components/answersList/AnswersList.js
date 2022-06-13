@@ -7,13 +7,11 @@ import {
     shouldReturn
 } from "./answerList.functions"
 import {
-    fetchQuizById,
     finishedQuiz, nextQuestion, quizRetry
-} from "../../storage/actions/action"
-// import {db, getQuiz} from "../../firebase/firebase"
-import {QuizStateComponent} from "../../core/QuizStateComponent"
+} from "../../storage/actions/quiz"
+import {QuizComponent} from "../../core/QuizComponent"
 import {$} from "../../core/dom"
-// import axios from "../../axios/axios-quiz"
+import {resetQuiz} from "../../storage/actions/create"
 
 // const quizes = {
 //     // currentQuestion: 1,
@@ -41,56 +39,51 @@ import {$} from "../../core/dom"
 //     ],
 // }
 
-export class AnswersList extends QuizStateComponent {
+export class AnswersList extends QuizComponent {
     static className = 'quiz__answers-list'
 
     constructor($root, options) {
         super($root, {
             name: 'AnswersList',
             listeners: ['click'],
-            // subscribe: ['answerState', 'activeQuestion'], подписки
-            // на изменения состояния с другими компонентами
+            subscribe: [],
             ...options
         })
 
         this.params = options.params
+        this.$root = $root
         this.quiz = {}
-        // this.getQuiz()
     }
 
     prepare() {}
 
     get template() {
         return `
-        <div class="container d-flex justify-content-center mt-5">
-            <div class="quiz-wrapper"></div>
-        </div>    
+            <div class="container d-flex justify-content-center">
+                <div class="quiz-wrapper"></div>
+            </div> 
         `
     }
 
     toHTML() {
+        setTimeout(() => {
+            this.quiz = this.store.getState().quiz
+            const quiz = this.quiz
+            try {
+                renderAnswersList(
+                    quiz,
+                    this.store.getState().activeQuestion
+                )
+            } catch (e) {
+                console.log('Error: ', e)
+            }
+        }, 0)
+
         return this.template
     }
 
     init() {
         super.init()
-        console.log('init')
-        this.getQuiz()
-        setTimeout(() => {
-            this.quiz = this.store.getState().quiz
-            const quiz = this.quiz
-            console.log('quiz: ', quiz)
-            renderAnswersList(
-                quiz,
-                this.store.getState().activeQuestion
-            )
-        }, 2000)
-    }
-
-    getQuiz() {
-        const quizId = this.params[1]
-        console.log('params: ', quizId)
-        this.$dispatch(fetchQuizById(quizId))
     }
 
     selectAnswer(event) {
@@ -108,14 +101,14 @@ export class AnswersList extends QuizStateComponent {
         }
 
         setTimeout(() => {
-            this.$dispatch(nextQuestion())
             const activeQuestion = this.store.getState().activeQuestion
             const answerState = this.store.getState().answerState
 
             if (isFinishedQuestion(quiz, activeQuestion)) {
-                renderAnswersList(quiz, activeQuestion)
-            } else {
                 renderFinishQuiz(quiz, answerState)
+            } else {
+                this.$dispatch(nextQuestion())
+                renderAnswersList(quiz, activeQuestion + 1)
             }
         }, 1000)
     }
@@ -139,6 +132,7 @@ export class AnswersList extends QuizStateComponent {
         }
 
         if (shouldReturn(event)) {
+            this.$dispatch(resetQuiz())
             this.$dispatch(quizRetry())
         }
     }
