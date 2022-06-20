@@ -67,7 +67,7 @@ export function createListItems(isAdmin) {
         <li class="nav-item"
         >
             <a class="nav-link"
-                href="/#"
+                href="/#logout"
                 data-type="logout"
             >
                 <i class="fas fa-sign-out-alt"></i>

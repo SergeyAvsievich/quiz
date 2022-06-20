@@ -41,12 +41,12 @@ export const renderFinishQuiz = (questions, answers) => {
             <ol>
                 ${finishedQuizList(questions, answers)}
             </ol>
-            <button class="btn btn-primary me-2" data-retry="true">
+            <button class="btn btn-primary m-2" data-retry="true">
                 Пройти тест заново
             </button>
             <a
                 href="/#" 
-                class="btn btn-success" 
+                class="btn btn-success m-2" 
                 data-return="true"
             >Перейти в список тестов</a>
         </div>

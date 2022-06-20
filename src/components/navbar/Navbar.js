@@ -27,6 +27,8 @@ export class Navbar extends QuizStateComponent {
 
     onClick(event) {
         const $target = $(event.target)
+        const findEl = this.$root.findOne('#navbar-collapse')
+
         switch ($target.data.type) {
             case 'logout':
                 return this.logoutHandler()
@@ -34,14 +36,19 @@ export class Navbar extends QuizStateComponent {
             case 'create':
             case 'admission':
                 this.$dispatch(resetQuiz())
-                this.$root.findOne('#navbar-collapse').removeClass('in')
+                if (findEl) {
+                    findEl.removeClass('in')
+                }
         }
     }
 
     logoutHandler() {
         this.$dispatch(logout())
         this.$dispatch(resetQuiz())
-        this.$root.findOne('#navbar-collapse').removeClass('in')
+        const findEl = this.$root.findOne('#navbar-collapse')
+        if (findEl) {
+            findEl.removeClass('in')
+        }
     }
 
     init() {

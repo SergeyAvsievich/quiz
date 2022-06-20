@@ -88,6 +88,7 @@ export function rootReducer(state = initialState, action){
             return {
                 ...state,
                 quiz: [],
+                activeQuestion: 1,
             }
         }
         default:

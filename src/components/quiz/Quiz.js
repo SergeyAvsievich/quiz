@@ -1,6 +1,5 @@
 import {$} from "@core/dom"
 import {QuizStateComponent} from "../../core/QuizStateComponent"
-import {preventDefault} from "../../core/utils"
 import {fetchQuizById} from "../../storage/actions/quiz"
 import {AnswersList} from "../answersList/AnswersList"
 import {Navbar} from "../navbar/Navbar"
@@ -47,9 +46,6 @@ export class Quiz extends QuizStateComponent {
     }
 
     init() {
-        if (process.env.NODE_ENV === 'production') {
-            document.addEventListener('contextmenu', preventDefault)
-        }
         this.components.forEach(component => component.init())
     }
 
@@ -76,6 +72,5 @@ export class Quiz extends QuizStateComponent {
 
     destroy(){
         this.components.forEach(component => component.destroy())
-        document.removeEventListener('contextmenu', preventDefault)
     }
 }

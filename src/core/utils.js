@@ -12,6 +12,9 @@ export function storage(key, data) {
     }
 
     localStorage.setItem(key, JSON.stringify(data))
+    // setTimeout(() => {
+    //     localStorage.removeItem(key)
+    // }, 1000 * 60 * 5)
 }
 
 // с map, set и подобными сд работать не будет!

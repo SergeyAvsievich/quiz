@@ -14,11 +14,11 @@ import './styles/style.scss'
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
-const defaultRout = ''
+const defaultRoute = ''
 const id = ActiveRoute.params.slice(1)
 
 const routes = {
-    [defaultRout]: TestListPage,
+    [defaultRoute]: TestListPage,
     [`quiz/${id}`]: QuizPage,
     admin: AuthPage,
     creator: QuizCreatorPage,
