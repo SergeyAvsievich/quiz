@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center;
   margin: 50px auto;
-  height: $quiz-height;
+  min-height: $quiz-height;
   width: $quiz-width;
   color: $white-color;
   border-radius: 5px;
@@ -16,7 +16,7 @@
     width: 1200px;
     padding: 50px 30px;
     border: 1px solid $white-color;
-    background: rgba(253, 126, 29, 0.5);
+    background: linear-gradient(90deg,#C54C8A ,#EF5E79);
     border-radius: 4px;
   }
 
@@ -62,7 +62,7 @@
 @media (max-width: 900px) {
   .quiz-wrapper {
     transform: translateY(0);
-    margin-top: 0;
+    margin-top: 20px;
     width: 90%;
   }
 

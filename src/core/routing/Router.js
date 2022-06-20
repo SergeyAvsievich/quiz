@@ -1,4 +1,4 @@
-import {$} from '@core/dom'
+import {$} from '../dom'
 import {ActiveRoute} from './ActiveRouter'
 
 export class Router {
@@ -14,30 +14,30 @@ export class Router {
         this.init()
     }
 
-    init(){
+    init() {
         window.addEventListener('hashchange', this.changeRouteHandler)
         this.changeRouteHandler()
     }
 
-    changeRouteHandler(){
+    changeRouteHandler() {
         if (this.page) {
             this.page.destroy()
         }
 
-        Object.keys(this.routes).forEach(route => {
+        Object.keys(this.routes).forEach(async route => {
             const activeRoute = ActiveRoute.params.join('/')
 
             if (activeRoute.includes(route)) {
                 const Page = this.routes[route]
                 this.page = new Page(ActiveRoute.params, this.store)
-                this.$root.clear()
-                this.$root.append(this.page.getRoot())
+                const root = await this.page.getRoot()
+                this.$root.clear().append(root)
                 this.page.afterRender()
             }
         })
     }
 
-    destroy(){
+    destroy() {
         window.removeEventListener('hashchange', this.changeRouteHandler)
     }
 }

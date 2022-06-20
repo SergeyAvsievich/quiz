@@ -3,6 +3,8 @@ module.exports = {
         "browser": true,
         "es6": true,
         "node": true,
+        "jest/globals": true,
+        "jest": true,
     },
     "parser": "babel-eslint",
     "extends": ["eslint:recommended", "google"],
@@ -28,5 +30,6 @@ module.exports = {
         //       "?": "before", ":": "before"}
         //     }
         // ]
-      },
+    },
+    "plugins": ["jest"],
 };
